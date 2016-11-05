@@ -1,0 +1,679 @@
+\chapter{Repetition: Funktionen}
+
+\section{Für jede Eingabe genau eine Ausgabe}
+
+Das Leben ist komplex. Ein Teil dieser Komplexität beruht darauf, dass es unzählige Relationen (Zusammenhänge) zwischen scheinbar unabhängigen Ereignissen gibt. Ausgerüstet mit Mathematik versuchen wir die Welt zu verstehen. Um über diese Zusammenhänge zu sprechen brauchen wir jedoch die richtigen Werkzeuge. Das führt uns zu den Funktionen:
+
+\marginnote{Etwas so einfaches wie ein Lexikon kann als Relation gesehen werden, denn es verbindet \textit{Worte} mit \textit{Definitionen}. Jedoch ist ein Lexikon keine Funktion, da es Wörter mit mehreren Definitionen gibt. Nur wenn es zu jedem Wort nur genau eine Definition geben würde, wäre ein Lexikon eine Funktion.}
+
+Eine \textit{Funktion} ist eine Relation zwischen verschiedenen Gruppen von Objekten, eine ``mathematische Maschine'', die für jeden ``Input'' genau einen ``Output'' liefert. Drücken wir dies explizit aus:
+
+
+\begin{definition}\index{Funktion!Definition}
+Eine \textbf{Funktion} ist eine Relation zwischen Gruppen die jedem Element der einen Gruppe genau ein Element der anderen zuordnet.
+\end{definition}
+
+Wenn wir über Funktionen sprechen sollten wir ausserdem explizit angeben, was genau der Input und der Output ist. Um was für Dinge handelt es sich dabei? In der Differentialrechnung treffen wir vor allem Funktionen an, bei denen Input und Output die reellen Zahlen (oder Teile davon) sind.
+
+\marginnote[.5in]{Der Name der Funktion ist zwar ``$f$'', wir werden sie jedoch ``$f(x)$'' (``f von x'') nennen}
+
+\begin{example}
+Betrachten Sie die Funktion $f(x)$, die jeder reellen Zahl die dritte Potenz dieser Zahl zuordnet:
+
+\begin{align*}
+1 &\mapsto 1\\
+-2 &\mapsto -8\\
+1.5 &\mapsto 3.375
+\end{align*}
+und so weiter. Diese Funktion kann mit Hilfe der Formel $f(x)=x^3$ oder durch den Plot in Abbildung~\ref{plot:fxn x^3} beschrieben werden.
+\end{example}
+
+\begin{marginfigure}[0in]
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-2:2,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+          ]
+	  \addplot [very thick, penColor, smooth] {x^3};
+        \end{axis}
+\end{tikzpicture}
+\caption{Ein Plot von $f(x)=x^3$. Für jeden Input (Wert auf der $x$-Achse) gibt es genau einen Output (Wert auf der $y$-Achse).}
+\label{plot:fxn x^3}
+\end{marginfigure}
+
+\begin{warning}
+Eine Funktion sollte nicht mit ihrer Formel oder ihrem Plot (Diagramm) verwechselt werden! Sie ist eine Zuordnung (Relation) einer Gruppe von Elementen zu einer anderen Gruppe, so dass zu jedem Input exakt ein Output gehört.
+\begin{itemize}
+\item Eine Formel beschreibt die Zuordnung mit Hilfe der Algebra
+
+\item  Ein Plot beschreibt die Zuordnung mit Hilfe von Bildern
+
+\end{itemize}
+\end{warning}
+
+
+
+\begin{marginfigure}[0in]
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-2:4,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            clip=false,
+            %axis on top,
+          ]
+          \addplot [textColor, very thin, domain=(0:2.3)] {0}; % puts the axis back, axis on top clobbers our open holes
+          \addplot [textColor, very thin] plot coordinates {(0,0) (0,2)}; % puts the axis back, axis on top clobbers our open holes
+	  \addplot [very thick, penColor, domain=(-2:-1)] {-2};
+          \addplot [very thick, penColor, domain=(-1:0)] {-1};
+          \addplot [very thick, penColor, domain=(0:1)] {0};
+          \addplot [very thick, penColor, domain=(1:2)] {1};
+          \addplot [very thick, penColor, domain=(2:3)] {2};
+          \addplot [very thick, penColor, domain=(3:4)] {3};
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(-2,-2)};  %% closed hole
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(-1,-1)};  %% closed hole
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(0,0)};  %% closed hole
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(1,1)};  %% closed hole
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(2,2)};  %% closed hole
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(3,3)};  %% closed hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(-1,-2)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(0,-1)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(1,0)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(2,1)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(3,2)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(4,3)};  %% open hole
+        \end{axis}
+\end{tikzpicture}
+\caption{Der Plot von $f(x)=\lfloor x\rfloor$. Für jeden Input (Wert auf der $x$-Achse) gibt es genau einen Output (Wert auf der $y$-Achse).}
+\label{plot:greatest-integer fxn}
+\end{marginfigure}
+
+
+\begin{example}
+Betrachten Sie die \textit{Abrundungsfunktion }, beschrieben durch
+\[
+f(x) = \lfloor x \rfloor.
+\]
+Diese Funktion ordnet jeder reellen Zahl $x$ die nächstliegende kleinere oder gleiche ganze Zahl zu. Ein Plot dieser Funktion ist in Abbildung~\ref{plot:greatest-integer fxn} zu sehen. Die Funktion ordnet zu mehreren Eingabewerten die gleichen Ausgabewerte zu, dies ist jedoch kein Problem. Damit es eine Funktion ist, muss zu jedem Eingabewert exakt ein Ausgabewert vorhanden sein, und dies ist hier erfüllt!
+\end{example}
+
+
+
+Zur Erinnerung: Eine Funktion ordnet jedem Element einer Menge genau ein Element einer anderen Menge zu. Die Menge aus der die Funktion zuordnet nennen wir die \textbf{Definitionsmenge}, die Menge auf die Funktion zuordnet nennen wir die \textbf{Abbildungsmenge}. In den bisherigen Beispielen waren Definitions- und Abbildungsmenge jeweils die Menge der reellen Zahlen $\R$. Im nächsten Beispiel sehen wir, dass dies nicht immer der Fall sein muss.
+
+\begin{example}
+Betrachten Sie die Funktion, die zu jeder nicht-negativen Zahl die Quadratwurzel dieser Zahl zuordnet. Diese Funktion wird beschrieben durch:
+\[
+f(x) = \sqrt{x}.
+\]
+Da dies eine Funktion ist und die Definitionsmenge die nicht-negativen reellen Zahlen umfasst, gilt:
+\[
+\sqrt{x^2} = |x|.
+\]
+Abbildung~\ref{plot:sqrt fxn} zeigt einen Plot von $f(x) = \sqrt{x}$.
+\end{example}
+
+\begin{marginfigure}[0in]
+\begin{tikzpicture}
+	\begin{axis}[
+            xmin=-8,xmax=8,
+            ymin=-5,ymax=5,
+            domain=0:8,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+          ]
+	  \addplot [very thick, penColor, smooth,samples=100] {sqrt(x)};
+        \end{axis}
+\end{tikzpicture}
+\caption{Plot von $f(x)=\sqrt{x}$. Für jeden Input (nicht-negativer Wert auf der $x$-Achse) gibt es genau einen Output (positiver Wert auf der $y$-Achse).}
+\label{plot:sqrt fxn}
+\end{marginfigure}
+
+
+\begin{marginfigure}[0in]
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-2:4,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            xtick={-2,...,4},
+            ytick={-3,...,3},
+          ]
+	  \addplot [very thick, penColor, smooth] {x-1};
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(2,1)};  %% open hole
+        \end{axis}
+\end{tikzpicture}
+\caption{Der Plot von $f(x)=\protect\frac{x^2 - 3x + 2}{x-2}$. Für jeden Input (jeder Wert auf der $x$-Achse ausser $x=25$) gibt es genau einen Output (Wert auf der $y$-Achse).}
+\label{plot:point undfed fxn}
+\end{marginfigure}
+
+Zum Schluss betrachten wir eine Funktion, bei welcher die Definitionsmenge aus allen reellen Zahlen bis auf einen einzelnen Punkt besteht.
+
+\begin{example}
+Betrachten Sie die Funktion die durch
+\[
+f(x) = \frac{x^2 - 3x + 2}{x-2}
+\]
+definiert wird. Diese Funktion mag unschludig aussehen, sie ist jedoch am Punkt $x=2$ nicht definiert. Vergleichen Sie Abbildung~\ref{plot:point undfed fxn} für einen Plot dieser Funktion.
+\end{example}
+
+
+
+\begin{exercises}
+
+\begin{marginfigure}[0in]
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-5:5,
+            ymin=-2,
+            ymax=4,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            grid=both,
+            grid style={dashed, gridColor},
+            xtick={-4,...,4},
+            ytick={-1,...,4},
+          ]
+	  \addplot [very thick, penColor,domain=2:5] {abs(x-2)};
+          \addplot [very thick, penColor,domain=-5:2] {abs(x-2)};
+        \end{axis}
+\end{tikzpicture}
+\caption{Plot von $y=f(x)$.}
+\label{plot:absforexer}
+\end{marginfigure}
+
+\begin{exercise}
+In Abbildung~\ref{plot:absforexer} sehen Sie einen Plot von $y=f(x)$. Was ist $f(4)$?    %% insert picture of f(x) = abs(x-2) on [-5, 5].
+\begin{answer}
+$2$
+\end{answer}
+\end{exercise}
+
+
+
+\begin{marginfigure}[0in]
+\begin{tikzpicture}
+	\begin{axis}[
+            ymin=-4,
+            ymax=4,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            grid=both,
+            grid style={dashed, gridColor},
+            xtick={-4,...,4},
+            ytick={-4,...,4},
+          ]
+	  \addplot [very thick, penColor,smooth,domain=-3:5] {(x-1)/(x+3)};
+          \addplot [very thick, penColor,smooth,domain=-5:-4.5] {(x-1)/(x+3)};
+        \end{axis}
+\end{tikzpicture}
+\caption{Plot von $y=f(x)$.}
+\label{plot:rtnlforexer}
+\end{marginfigure}
+\begin{exercise}
+In Abbildung~\ref{plot:rtnlforexer} sehen Sie einen Plot von $y=f(x)$. Was ist $f(-2)$?  %% insert picture of f(x) = (x-1)/(x+3) on [-5, 5].
+\begin{answer}
+$-3$
+\end{answer}
+\end{exercise}
+
+
+\begin{exercise} Betrachten Sie die folgenden Punkte:
+\[
+(5,8),\qquad (3,6), \qquad(-6,-9), \qquad(-1,-4), \qquad(-10,7)
+\]
+Gehören alle Punkte zum Graphen zu einer Funktion $y =f(x)$?
+\begin{answer}
+Ja. Jeder Eingabewert besitzt genau einen Ausgabewert.
+\end{answer}
+\end{exercise}
+
+
+\begin{exercise} Betrachten Sie die folgenden Punkte:
+\[
+(7,-4),\qquad (0,3), \qquad(-2,-2), \qquad(-1,-8), \qquad(10,4)
+\]
+Gehören alle Punkte zum Graphen zu einer Funktion $y =f(x)$?
+\begin{answer}
+Ja. Jeder Eingabewert besitzt genau einen Ausgabewert.
+\end{answer}
+\end{exercise}
+
+
+\begin{exercise} Betrachten die die folgenen Punkte, die alle auf dem Graphen von $y =f(x)$ liegen:
+\[
+(-5,8),\qquad (5,-1), \qquad(-4,0), \qquad(2,-9), \qquad(4,10)
+\]
+Finden Sie den Wert von $x$ für den Fall dass $f(x)=-9$.
+\begin{answer}
+$x=2$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} Ein Schüler behauptet dass die folgende Gruppe von Punkten keine Funktion definiert:
+\[
+(-7,-4),\qquad (10,-4), \qquad(0,-4), \qquad(3,-4)
+\]
+Er begründet seine Behauptung damit, dass der Ausgabewert $-4$ vier verschiedene Inputwerte besitzt. Hat er recht mit seiner Behauptung?
+
+\begin{answer}
+Nein, die Punkte definieren eine Funktion, da jeder Eingabewert genau einen Ausgabewert besitzt.
+\end{answer}
+\end{exercise}
+
+\begin{exercise} Betrachten Sie die folgenden Punkte:
+\[
+(-1,5),\qquad (-3,4), \qquad(x,3), \qquad(5,-3), \qquad(8,5)
+\]
+Geben Sie einen Wert für $x$ an, so dass die Punkte keine Funktion definieren.
+\begin{answer}
+Wenn $x$ einen der folgenden Werte annimmt: $-1$, $-3$, $5$, oder $8$.
+\end{answer}
+\end{exercise}
+
+\begin{exercise} Sei $f(x) = 18x^5-27x^4-32x^3+11x^2 -7x +4$. Untersuchen Sie $f(0)$.
+\begin{answer}
+$4$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} Sei $f(x) = x^5+2x^4+3x^3+4x^2+5x+6$. Untersuchen Sie $f(1)$.
+\begin{answer}
+$21$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} Sei $f(x) = x^5+2x^4+3x^3+4x^2+5x+6$. Untersuchen Sie $f(-1)$.
+\begin{answer}
+$3$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} Sei $f(x) =\sqrt{x^2+x+1}$. Untersuchen Sie $f(w)$.
+\begin{answer}
+$\sqrt{w^2+w+1}$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} Sei $f(x) =\sqrt{x^2+x+1}$. Untersuchen Sie $f(x+h)$.
+\begin{answer}
+$\sqrt{(x+h)^2+(x+h)+1}$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} Sei $f(x) = \sqrt{x^2+x+1}$. Untersuchen Sie $f(x+h) - f(x)$.
+\begin{answer}
+$\sqrt{(x+h)^2+(x+h)+1} - \sqrt{x^2+x+1}$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} Sei $f(x) = x+1$. Was ist $f(f(f(f(1))))$?
+\begin{answer}
+$5$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} Sei $f(x) = x+1$. Was ist $f(f(f(f(x+h))))$?
+\begin{answer}
+$4+x+h$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Sei $f(8) = 8$ und $g(x)=3\cdot f(x)$, welcher Punkt erfüllt $y=g(x)$?
+\begin{answer}
+$x=8$, $y=24$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Sei $f(7) = 6$ und $g(x)=f(8\cdot x)$, welcher Punkt erfüllt $y=g(x)$?
+\begin{answer}
+$x=7/8$, $y=6$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Sei $f(-1) = -7$ und $f(x)=g(-6\cdot x)$, welcher Punkt erfüllt
+$y=g(x)$?
+\begin{answer}
+$x=6$, $y=-7$
+\end{answer}
+\end{exercise}
+
+\end{exercises}
+
+\section{Umkehrfunktionen}
+Eine Funktion ordnet jedem Eingabewert (Input) genau einen Ausgabewert (Output) zu. Die Umkehrfunktion jedoch ordnet nun jedem ``Ausgabewert'' genau einen ``Eingabewert'' zu. Wir betrachten dazu ein paar alltägliche Beispiele:
+
+\begin{example}
+Nehmen wir an, Sie füllen einen Swimming-Pool mit einem Gartenschlauch. Da es in der letzten Nacht geregnet hat, ist der Pool bereits zu einem Teil (200 Liter) gefüllt. Das Wasservolumen in Litern nach $t$ Stunden des Auffüllens wird beschrieben durch:
+\[
+v(t) = 700t + 200
+\]
+Was beschreibt die Umkehrfunktion von $v(t)$? Wie sieht diese Umkehrfunktion aus?
+\end{example}
+
+
+\marginnote[.5in]{Wir missachten hier etwas die Notationsregeln, in dem wir erlauben, das $v$ und $t$ gleichzeitig Namen von Funktionen und Variablen sind.}
+\begin{solution}
+Die Funktion $v(t)$ sagt uns, wie viele Liter Wasser nach $t$ Stunden im Pool sind. Die Umkehrfunktion von $v(t)$ sagt uns, wie viel Zeit man benötigt, um ein bestimmtes Wasservolumen zu erhalten.
+Um die Umkehrfunktion zu erhalten, setzen wir $v=v(t)$ und schreiben
+\[
+v = 700t + 200.
+\]
+Nun lösen wir nach $t$ auf:
+\[
+t = v/700 - 2/7
+\]
+Die Umkehrfunktion ist hier eine Funktion die jedem Volumen eine Zeit zuordnet:
+$t(v) = v/700-2/7$.
+\end{solution}
+
+
+Betrachten wir ein weiteres Beispiel:
+
+\begin{example}\label{E:example-ball-bridge}
+
+Sie stehen auf einer Brücke, 60 Meter über dem Wasserspiegel. Sie werfen einen Ball senkrecht in die Luft. Dieser Ball verlässt ihre Hand mit einer Startgeschwindigkeit von 30 Metern pro Sekunde. $t$ soll die Zeit (in Sekunden) nach Werfen des Balles bezeichnen, die Höhe des Balles zum Zeitpunkt $t$ berechnet sich nun näherungsweise zu $h(t)=-5 t^2 +30t +60$. Was beschreibt die Umkehrfunktion von $h(t)$? Wie sieht diese Umkehrfunktion aus?
+\end{example}
+
+
+
+\begin{solution}
+Die Funktion $h(t)$ beschreibt die Höhe des Balles zu einer gegebenen Zeit. Die Umkehrfunktion von $h(t)$ beschreibt zu welchem Zeitpunkt sich der Ball auf einer bestimmten Höhe befindet. Hier gibt es nun jedoch ein Problem: Es gibt keine Funktion, die eine Umkehrfunktion von $h(t)$ ist! Betrachten Sie Abbildung~\ref{plot:fxn
+  ball}, man kann erkennen, dass es für einige Höhen --- zum Beispiel für 60 Meter, zwei Zeiten gibt.
+
+Auch wenn es zu $h(t)$ keine Umkehrfunktion gibt, finden wir eine, wenn wir die Definitionsmenge der Funktion $h(t)$ einschränken. Der höchste Punkt des Fluges ist auf $105$ Meter nach $3$ Sekunden. In dem Falle finden wir eine Umkehrfunktion zu $h(t)$ im Intervall $[3,\infty)$. Schreiben Sie
+
+\begin{align*}
+h &=  -5 t^2 +30t+60\\
+0 &= -5 t^2 +30t+(60 - h)
+\end{align*}
+und lösen Sie nach $t$ auf (mit Hilfe der Auflösungsformel für eine quadratische Gleichung).
+\begin{align*}
+t &= \frac{-30\pm \sqrt{30^2 -4(-5)(60-h)}}{2(-5)}\\
+&=3\mp \sqrt{3^2+ .2(60-h)}\\
+&=3\mp \sqrt{21-.2h}
+\end{align*} 
+Was bedeutet es eigentlich, dass wir die Definitionsmenge der Funktion $h(t)$ auf Werte für $t$ zwischen $[3,\infty)$ eingeschränkt haben?
+Da $h(t)$ für genau $t=3$ maximal wird, ist der grösste Wert der $h$ erreichen kann $105$. Dies bedeutet nun, dass $21-.2h \ge 0$ und somit ist $\sqrt{21-.2h}$ eine reelle Zahl (die Wurzel aus einer negativen Zahl wäre nicht mehr reell. 
+
+Wir wissen nun auch noch etwas weiteres: $t>3$. Dies bedeutet, dass das ``$\mp$'' von oben ein ``$+$'' sein muss. Somit ist die Umkehrfunktion von $h(t)$ im Intervall $[3,\infty)$ gleich $t(h) = 3+ \sqrt{21-.2h}$. Ein ähnliches Argument zeigt, dass die Umkehrfunktion von $h(t)$ im Intervall $(-\infty, 3]$ gleich
+  $t(h) = 3- \sqrt{21-.2h}$ ist.
+\end{solution}
+
+\begin{marginfigure}[-5in]
+\begin{tikzpicture}
+	\begin{axis}[
+            clip=false, domain=0:7.58, axis lines =middle, xlabel=$t$,
+            ylabel=$h$, every axis y label/.style={at=(current
+              axis.above origin),anchor=south}, every axis x
+            label/.style={at=(current axis.right of
+              origin),anchor=west}, ] \addplot [very thick, penColor,
+            smooth] {-5*x^2 +30*x+60};
+        \end{axis}
+\end{tikzpicture}
+\caption{
+Ein Plot von $h(t)=-5t^2+30t+60$. Für jeden Eingabewert (ein Wert auf der $t$-Achse) gibt es genau einen Ausgabewert (ein Wert auf der $h$-Achse). Für einige Werte auf der $h$-Achse gibt es jedoch zwei Werte auf der $t$-Achse. Also gibt es keine Funktion, die eine Umkehrfunktion von $h(t)$ ist.}
+\label{plot:fxn ball}
+\end{marginfigure}
+
+Wit sehen zwei unterschiedliche Fälle von Funktionen mit unseren beiden Beispielen. Um den Unterschied klar zu beschreiben, benötigen wir eine Definition:
+
+\begin{definition}\index{eineindeutig}
+Eine Funktion ist
+
+Eine Funktion ist \textbf{eineindeutig} wenn es für jeden Wert in der Abbildungsmenge genau einen Wert in der Definitionsmenge gibt.
+\end{definition}
+
+Man kann in einem Plot testen ob der Graph zu einer Funktion gehört, in dem man eine vertikale Linie durch den Graphen zieht. Wenn jede denkbare vertikale Linie den Graphen nur in höchstens einem Punkt schneidet, handelt es sich um eine Funktion. Eine Funktion ist nun eineindeutig, wenn das gleiche mit jeder denkbaren horizontalen Linie geschieht. Eine Umkehrfunkton lässt sich nur finden, wenn die Funktion eineindeutig ist, in allen anderen Fällen muss zuerst die Definitionsmenge eingeschränkt werden, so wie wir es im Beispiel~\ref{E:example-ball-bridge} gemacht haben.
+
+
+Wir untersuchen ein paar weitere Beispiele:
+
+
+
+\begin{example}
+Betrachten Sie die Funktion
+\[
+f(x) = x^3.
+\]
+Besitzt $f(x)$ eine Umkehrfunktion? Wenn ja, wie sieht diese aus? Wenn nein, versuchen Sie die Definitionsmenge von $f(x)$ einzuschränken und finden Sie die Umkehrfunktion in der eingeschränkten Definitionsmenge.
+\end{example}
+
+
+\begin{solution}
+In diesem Beispiel ist $f(x)$ eine eineindeutige Funktion und $f^{-1}(x) = \sqrt[3]{x}$ ist ihre Umkehrfunktion. Vergleichen Sie Abbildung~\ref{plot:fxn and inverse x^3}.
+\end{solution}
+
+\begin{marginfigure}[-2in]
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-2:2,
+            xmin=-2, xmax=2,
+            ymin=-2, ymax=2,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+          ]
+	  \addplot [very thick, penColor, smooth] {x^3};
+          \addplot [very thick, penColor2, smooth, samples=100,domain=.01:2] {x^(1/3)};
+          \addplot [very thick, penColor2, smooth, samples=100,domain=-2:-.01] {-abs(x)^(1/3)};
+          \addplot [very thick, penColor2] plot coordinates {(.01,.215) (-.01,-.215)};
+          \addplot [dashed, textColor] {x};
+          \node at (axis cs:-1.2,-.42) [penColor,anchor=west] {$f(x)$};
+          \node at (axis cs:1.2,.9) [penColor2, anchor=west] {$f^{-1}(x)$};
+        \end{axis}
+\end{tikzpicture}
+\caption{
+Ein Plot von $f(x)=x^3$ und von ihrer Umkehrfunktion $f^{-1}(x) = \sqrt[3]{x}$. Beachten Sie dass
+  $f^{-1}(x)$ der Spiegelung von $f(x)$ an der Linie
+  $y=x$ entspricht.}
+\label{plot:fxn and inverse x^3}
+\end{marginfigure}
+
+
+\begin{example}
+Betrachten Sie die Funktion
+\[
+f(x) = x^2.
+\]
+Besitzt $f(x)$ eine Umkehrfunktion? Wenn ja, wie sieht diese aus? Wenn nein, versuchen Sie die Definitionsmenge von $f(x)$ einzuschränken und finden Sie die Umkehrfunktion in der eingeschränkten Definitionsmenge.
+\end{example}
+
+
+\begin{solution}
+In diesem Beispiel ist $f(x)$ keine eineindeutige Funktion. Sie ist jedoch im Intervall $[0,\infty)$ eineindeutig. Also finden wir die Umkehrfunktion in diesem Intervall. Die Umkehrfunktion ist unsere bekannte Funktion $\sqrt{x}$.  Vergleichen Sie Abbildung~\ref{plot:fxn and inverse x^2}.
+\end{solution}
+
+\begin{marginfigure}[0in]
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-2:2,
+            xmin=-2, xmax=2,
+            ymin=-2, ymax=2,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+          ]
+	  \addplot [very thick, penColor, smooth] {x^2};
+          \addplot [very thick, penColor2, smooth, samples=100,domain=0:2] {sqrt(x)};
+          \addplot [dashed, textColor] {x};
+          \node at (axis cs:-1.2,.55) [penColor,anchor=west] {$f(x)$};
+          \node at (axis cs:1.4,1) [penColor2, anchor=west] {$f^{-1}(x)$};
+        \end{axis}
+\end{tikzpicture}
+\caption{Ein Plot von $f(x)=x^2$ und ihrer Umkehrfunktion $f^{-1}(x) = \sqrt{x}$. Die Funktion
+  $f(x)=x^2$ ist nicht eineindeutig über $\R$, aber über $[0,\infty)$.}
+\label{plot:fxn and inverse x^2}
+\end{marginfigure}
+
+
+\subsection{Bemerkung zur Notation}
+
+Gegeben sei die Funktion $f(x)$. Wir bezeichnen nun die Umkehrfunktion (wenn diese existiert) von $f(x)$ mit
+\[
+f^{-1}(x) = \text{die Umkehrfunktion von $f(x)$, wenn diese existiert.}
+\]
+Andererseits ist
+\[
+f(x)^{-1} = \frac{1}{f(x)}.
+\]
+
+\begin{warning}
+Es ist allgemein nicht der Fall, dass
+\[
+f^{-1}(x) = f(x)^{-1}.
+\]
+\end{warning}
+
+Diese etwas verwirrende Notation wird noch schlimmer bei
+\[
+\sin^2(x) = (\sin(x))^2\qquad \text{jedoch} \qquad \sin^{-1}(x)
+\ne(\sin(x))^{-1}.
+\]
+
+In der Trigonometrie kann diese Verwirrung etwas entschärft werden, indem man die Bezeichnung $\arcsin$ für die Umkehrfunktion der Sinusfunktion verwendet.
+functions.
+
+
+
+
+\begin{exercises}
+
+\begin{exercise}
+Die Länge von Rapunzels Haaren nach einer Zeitdauer von $t$ Monaten ist gegeben durch
+\[
+\l(t) = \frac{8t}{3}+8.
+\]
+Geben Sie die Umkehrfunktion von $\l(t)$ an.  Was muss man sich unter der Umkehrfunktion $\l(t)$
+ vorstellen?
+\begin{answer}
+$\l^{-1}(t) = \frac{3t}{8} - 3$, diese Funktion ergibt die Anzahl Monate, bis die gegebene Länge erreicht wird.
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Der Betrag auf einem Sparkonto (in Franken) sei gegeben durch
+\[
+m(t) = 900t + 300
+\]
+die Variable $t$ bezeichnet die Zeit in Monaten. Geben Sie die Umkehrfunktion von $m(t)$ an.  Was stellt die Umkehrfunktion von $m(t)$ dar?
+\begin{answer}
+$m^{-1}(t) = \frac{t}{900} - \frac{1}{3}$, diese Funktion ergibt die Anzahl Monate, die benötigt werden bis der gegebene Betrag erreicht wird.
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Ein Jongleur wirft Bälle in die Höhe. Die Höhe eines Balles wird durch die Funktion
+\[
+h(t) = -5t^2+10t+2
+\]
+beschrieben. $h(t)$ gibt die Höhe in Metern und $t$ bezeichnet die Zeit in Sekunden nach dem loslassen. Geben Sie zwei unterschiedliche Umkehrfunktionen über zwei unterschiedlichen eingeschränkten Definitionsbereichen, wenn die Funktion $h(t)$ im Punkt $(1,7)$ ein Maximum erreicht. Was stellen diese Umkehrfunktionen dar?
+\begin{answer}
+$h^{-1}(t) = 1 \mp \sqrt{1.4-0.2t}$.  Jede dieser Funktionen gibt die Zeit für die gegebene Flughöhe.
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Die Anzahl Bakterien $n$ in tiefgekühlten Nahrungsmitteln kann mit der Funktion
+\[
+n(t) =17t^2 - 20t + 700
+\]
+modeliert werden. $t$ bezeichnet hier die Temperatur des Nahrungsmittels in Grad Celsius.Geben Sie zwei Umkehrfunktionen über zwei unterschiedlichen eingeschränkten Definitionsbereichen an. Was stellen diese Umkehrfunktionen dar?
+\begin{answer}
+$n^{-1}(t)= \frac{10}{17} \pm \frac{\sqrt{68t-47200}}{34}$, jede der beiden Funktionen beschreibt die Temperatur die man für eine bestimmte Bakterienanzahl benötigt.
+\end{answer}
+\end{exercise}
+
+
+\begin{exercise}
+Die Höhe in Metern über Boden einer Person in einem Riesenrad kann beschrieben werden durch
+\[
+h(t) = 18\cdot \sin( \frac{\pi \cdot t}{7} ) + 20
+\]
+Die Variable $t$ bezeichnet die vergangene Zeit in Sekunden. Finden und interpretieren Sie $h^{-1}(20)$ für den Fall dass $h$ auf den Definitionsbereich $[3.5, 10.5]$ beschränkt wird.
+\begin{answer}
+$h^{-1}(20)=7$. Das heisst, dass im beschränkten Definitionsbereicheine Höhe von 20 Meter nach 7 Sekunden erreicht wird.
+\end{answer}
+\end{exercise}
+
+
+\begin{exercise}
+Der Wert $w$ (in Franken) eines Autos nach $t$ Jahren Gebrauch kann durch
+\[
+w(t) = 10000\cdot 0.8^{t}.
+\]
+modelliert werden.
+Finden Sie  $v^{-1}(4000)$ und erklären Sie was dies bedeutet.
+\begin{answer}
+$v^{-1}(4000) = 4.1$.  Das bedeutet, dass es ungefähr 4.1 Jahre dauert, bis der Wert des Autos auf 4000 Franken gefallen ist.
+\end{answer}
+\end{exercise}
+
+
+
+\begin{exercise}
+Die Lautstärke $d$ (in Dezibel) wird durch die folgende Gleichung beschrieben:
+\[
+d(I) = 10\cdot \log_{10}\left(\frac{I}{I_0}\right)
+\]
+Die Variable $I$ bezeichnet die gegebene Intensität und $I_{0}$ ist die Hörschwelle ( die leiseste noch wahrnehmbare Intensität).  Bestimmen Sie  $d^{-1}(85)$ in Bezug auf die Hörschwelle.
+\begin{answer}
+$d^{-1}(85) = 3.2 \cdot 10^{8} \cdot  I_0$ oder ungefähr das 320 Millionenfache der Hörschwelle.
+\end{answer}
+\end{exercise}
+
+
+
+\begin{exercise}
+
+Was ist der Unterschied in der Bedeutung von $f^{-1}(x)$ und $f(x)^{-1}$?
+\begin{answer}
+$f^{-1}(x)$ bezeichnet die Umkehrfunktion (wenn diese existiert) von $f(x)$;
+  $f(x)^{-1}$ ist $1/f(x)$, der Kehrwert.
+\end{answer}
+\end{exercise}
+
+
+
+\begin{exercise}
+Sortieren Sie die jeweils gleichen Ausdrücke in Gruppen:
+\[
+\sin^2 x, \qquad \sin(x)^2, \qquad (\sin x)^2, \qquad \sin(x^2), \qquad  \sin x^2, \qquad (\sin x)(\sin x)
+\]
+\begin{answer}
+Gruppe A: $\sin^2x$, $\sin(x)^2$, $(\sin x)^2$, $(\sin x)(\sin x)$;
+Gruppe B: $\sin(x^2)$, $\sin x^2$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Sortieren Sie die jeweils gleichen Ausdrücke in Gruppen:
+\[
+\arcsin(x), \qquad (\sin x)^{-1}, \qquad  \sin^{-1}(x), \qquad \frac{1}{\sin(x)}
+\]
+\begin{answer}
+Gruppe A: $\arcsin(x)$, $\sin^{-1}(x)$;
+Gruppe B: $\frac{1}{\sin(x)}$, $(\sin x)^{-1}$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Ist $\sqrt{x^2} = \sqrt[3]{x^3}$? Begründen Sie.
+\begin{answer}
+Nein. Betrachten Sie $x = -1$. $\sqrt{(-1)^2} = \sqrt{1} = 1$. Jedoch ist $\sqrt[3]{(-1)^3} =  \sqrt[3]{-1} = -1$.
+\end{answer}
+\end{exercise}
+
+
+
+\end{exercises}

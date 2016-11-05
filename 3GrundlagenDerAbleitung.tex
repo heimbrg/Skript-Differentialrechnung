@@ -1,0 +1,1014 @@
+\chapter{Grundlagen der Ableitung}
+
+
+\section{Steigung der Tangenten mit Hilfe der Grenzwerte}
+
+$f(x)$ sei eine Funktion. Es ist oft sehr nützlich zu wissen, wie empfindlich die Funktion $f(x)$ auf kleine Änderungen von $x$ reagiert. Zum Beispiel in den folgenden Situationen:
+
+\begin{itemize}
+\item $p(t)$ bezeichne die \textbf{P}osition eines Objektes abhängig von der Zeit $t$. Die Änderungsrate ergibt die Geschwindigkeit des Objekts (wie verändert sich die Position mit der Zeit).
+\item $v(t)$ bezeichne die Geschwindigkeit eines Objektes abhängig von der Zeit $t$. Die Änderungsrate ergibt die Beschleuigung des Objekts (wie verändert sich die Geschwindigkeit mit der Zeit).
+\item Die Änderungsrate einer Funktion kann uns ausserdem auch helfen, Gleichungen zu lösen die wir mit anderen Methoden nicht lösen könnten.
+\end{itemize}
+
+Die Änderungsrate einer Funktion entspricht der Steigung einer Tangente an dieser Funktion. Wir benutzen zunächst diese formale Definition einer \textit{Tangente}:
+\begin{quote}\index{Tangente}
+
+Gegeben sei eine Funktion $f(x)$. Wenn man genügend nah in die Funktion ''hineinzoomt``, so dass $f(x)$ wie eine gerade Linie ausschaut ist dies eine Tangente an $f(x)$ am Punkt der durch $x$ festgelegt ist.
+\end{quote}
+Diese formale Definition wird in Abbildung~\ref{figure:informal-tangent} gezeigt.
+\begin{figure*}
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=0:6, range=0:7,
+            ymin=-.2,ymax=7,
+            width=\textwidth,
+            height=7cm, %% Hard coded height! Moreover this effects the aspect ratio of the zoom--sort of BAD
+            axis lines=none,
+          ]   
+          \addplot [draw=none, fill=textColor!10!background] plot coordinates {(.8,1.6) (2.834,5)} \closedcycle; %% zoom fill
+          \addplot [draw=none, fill=textColor!10!background] plot coordinates {(2.834,5) (4.166,5)} \closedcycle; %% zoom fill
+          \addplot [draw=none, fill=background] plot coordinates {(1.2,1.6) (4.166,5)} \closedcycle; %% zoom fill
+          \addplot [draw=none, fill=background] plot coordinates {(.8,1.6) (1.2,1.6)} \closedcycle; %% zoom fill
+
+          \addplot [draw=none, fill=textColor!10!background] plot coordinates {(3.3,3.6) (5.334,5)} \closedcycle; %% zoom fill
+          \addplot [draw=none, fill=textColor!10!background] plot coordinates {(5.334,5) (6.666,5)} \closedcycle; %% zoom fill
+          \addplot [draw=none, fill=background] plot coordinates {(3.7,3.6) (6.666,5)} \closedcycle; %% zoom fill
+          \addplot [draw=none, fill=background] plot coordinates {(3.3,3.6) (3.7,3.6)} \closedcycle; %% zoom fill
+          
+          \addplot [draw=none, fill=textColor!10!background] plot coordinates {(3.7,2.4) (6.666,1)} \closedcycle; %% zoom fill
+          \addplot [draw=none, fill=textColor!10!background] plot coordinates {(3.3,2.4) (3.7,2.4)} \closedcycle; %% zoom fill
+          \addplot [draw=none, fill=background] plot coordinates {(3.3,2.4) (5.334,1)} \closedcycle; %% zoom fill          
+          \addplot [draw=none, fill=background] plot coordinates {(5.334,1) (6.666,1)} \closedcycle; %% zoom fill
+          
+
+          \addplot [draw=none, fill=textColor!10!background] plot coordinates {(.8,.4) (2.834,1)} \closedcycle; %% zoom fill
+          \addplot [draw=none, fill=textColor!10!background] plot coordinates {(2.834,1) (4.166,1)} \closedcycle; %% zoom fill
+          \addplot [draw=none, fill=background] plot coordinates {(1.2,.4) (4.166,1)} \closedcycle; %% zoom fill
+          \addplot [draw=none, fill=background] plot coordinates {(.8,.4) (1.2,.4)} \closedcycle; %% zoom fill
+
+          \addplot[very thick,penColor, smooth,domain=(0:1.833)] {-1/(x-2)};
+          \addplot[very thick,penColor, smooth,domain=(2.834:4.166)] {3.333/(2.050-.3*x)-0.333}; %% 2.5 to 4.333
+          %\addplot[very thick,penColor, smooth,domain=(5.334:6.666)] {11.11/(1.540-.09*x)-8.109}; %% 5 to 6.833
+          \addplot[very thick,penColor, smooth,domain=(5.334:6.666)] {x-3}; %% 5 to 6.833
+          
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(1,1)};  %% point to be zoomed
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(3.5,3)};  %% zoomed pt 1
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(6,3)};  %% zoomed pt 2
+
+          \addplot [->,textColor] plot coordinates {(0,0) (0,6)}; %% axis
+          \addplot [->,textColor] plot coordinates {(0,0) (2,0)}; %% axis
+          
+          \addplot [textColor!50!background] plot coordinates {(.8,.4) (.8,1.6)}; %% box around pt
+          \addplot [textColor!50!background] plot coordinates {(1.2,.4) (1.2,1.6)}; %% box around pt
+          \addplot [textColor!50!background] plot coordinates {(.8,1.6) (1.2,1.6)}; %% box around pt
+          \addplot [textColor!50!background] plot coordinates {(.8,.4) (1.2,.4)}; %% box around pt
+          
+          \addplot [textColor!50!background] plot coordinates {(2.834,1) (2.834,5)}; %% zoomed box 1
+          \addplot [textColor!50!background] plot coordinates {(4.166,1) (4.166,5)}; %% zoomed box 1
+          \addplot [textColor!50!background] plot coordinates {(2.834,1) (4.166,1)}; %% zoomed box 1
+          \addplot [textColor!50!background] plot coordinates {(2.834,5) (4.166,5)}; %% zoomed box 1
+
+          \addplot [textColor] plot coordinates {(3.3,2.4) (3.3,3.6)}; %% box around zoomed pt
+          \addplot [textColor] plot coordinates {(3.7,2.4) (3.7,3.6)}; %% box around zoomed pt
+          \addplot [textColor] plot coordinates {(3.3,3.6) (3.7,3.6)}; %% box around zoomed pt
+          \addplot [textColor] plot coordinates {(3.3,2.4) (3.7,2.4)}; %% box around zoomed pt
+
+          \addplot [textColor] plot coordinates {(5.334,1) (5.334,5)}; %% zoomed box 2
+          \addplot [textColor] plot coordinates {(6.666,1) (6.666,5)}; %% zoomed box 2
+          \addplot [textColor] plot coordinates {(5.334,1) (6.666,1)}; %% zoomed box 2
+          \addplot [textColor] plot coordinates {(5.334,5) (6.666,5)}; %% zoomed box 2
+
+          \node at (axis cs:2.2,0) [anchor=east] {$x$};
+          \node at (axis cs:0,6.6) [anchor=north] {$y$};
+        \end{axis}
+\end{tikzpicture}
+\caption{Gegeben sei eine Funktion $f(x)$. Wenn man genügend nah in die Funktion ''hineinzoomt``, so dass $f(x)$ wie eine gerade Linie ausschaut ist dies eine Tangente an $f(x)$ am Punkt der durch $x$ festgelegt ist.}
+\label{figure:informal-tangent}
+\end{figure*}
+
+
+Die \textit{Ableitung} einer Funktion $f(x)$ am Punkt $x$ ist nun die Steigung der Tangente am Punkt $x$. Um die Steigung dieser Tangente zu finden, betrachten wir \textit{Sekanten}, also Linien die die Kurve um $x$ an zwei Punkten schneiden. Die Steigung jeder Sekanten, die durch die beiden Punkte $(x,f(x))$ und $(x+h,f(x+h))$ gehen ist gegben durch
+\[
+\frac{\Delta y}{\Delta x}=\frac{f(x+h) -f(x)}{(x+h)-x} = \frac{f(x+h)-f(x)}{h},
+\]
+diesen Bruch nennen wir den \textit{Differentialquotienten} (vergleichen Sie Abbildung~\ref{figure:limit-dfn}). Dies führt uns zur \textit{Grenzwertdefinition der Ableitung}:
+
+
+\begin{definitionOfTheDerivative}\index{Grenzwert!Definition der Ableitung}\index{Ableitung!Grenzwertdefinition}
+Die \textbf{Ableitung} der Funktion $f(x)$ ist die Funktion
+\[
+\ddx f(x) = \lim_{h\to 0} \frac{f(x+h) - f(x)}{h}.
+\]
+Wenn dieser Grenzwert für einen gegebenen Wert von $x$ nicht existiert, dann ist $f(x)$ nicht \textit{differenzierbar} am Punkt $x$.
+\end{definitionOfTheDerivative}
+\begin{marginfigure}[-1.75in]
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=0:2, range=0:6,ymax=6,ymin=0,
+            axis lines =left, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            xtick={1,1.666}, ytick={1,3},
+            xticklabels={$x$,$x+h$}, yticklabels={$f(x)$,$f(x+h)$},
+            axis on top,
+          ]         
+          \addplot [penColor2!15!background, domain=(0:2)] {-3.348+4.348*x};
+          \addplot [penColor2!32!background, domain=(0:2)] {-2.704+3.704*x};
+          \addplot [penColor2!49!background, domain=(0:2)] {-1.994+2.994*x};         
+          \addplot [penColor2!66!background, domain=(0:2)] {-1.326+2.326*x}; 
+          \addplot [penColor2!83!background, domain=(0:2)] {-0.666+1.666*x};
+	  \addplot [textColor,dashed] plot coordinates {(1,0) (1,1)};
+          \addplot [textColor,dashed] plot coordinates {(0,1) (1,1)};
+          \addplot [textColor,dashed] plot coordinates {(0,3) (1.666,3)};
+          \addplot [textColor,dashed] plot coordinates {(1.666,0) (1.666,3)};
+          \addplot [very thick,penColor, smooth,domain=(0:1.833)] {-1/(x-2)};
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(1.666,3)};  %% closed hole          
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(1,1)};  %% closed hole          
+          \addplot [very thick,penColor2, smooth,domain=(0:2)] {x};
+        \end{axis}
+\end{tikzpicture}
+\caption{Tangenten können als Grenzwert von Sekanten gefunden werden. Die Steigung der Tangente ist 
+$\lim_{h\to 0} \frac{f(x+h) - f(x)}{h}.$}
+\label{figure:limit-dfn}
+\end{marginfigure}
+
+\break
+
+\begin{definition}\index{Ableitung!Notation}
+Es existieren verschiedene Notationen für die Ableitung einer Funktion, wir benutzen in den meisten Fällen
+\[
+\ddx f(x) = f'(x).
+\]
+Wenn wir mit einer Funktion arbeiten, die nicht von $x$ somdern etwa von $t$ abhängt, so schreiben wir
+\[
+\dd{t} f(t) = f'(t).
+\]
+Falls $y = f(x)$, werden die Notationen $\dydx$, $\dot{y}$, und $D_x f(x)$ auch benutzt
+\end{definition}
+
+Ein paar Beispiele:
+
+\begin{example}
+Berechnen Sie 
+\[
+\ddx (x^3 + 1).
+\] 
+\end{example}
+
+\begin{marginfigure}[0in]
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-3:3,
+            ymax=4,
+            ymin=-4,
+            %samples=100,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west}
+          ]
+          \addplot [very thick, penColor2, smooth,domain=(-3:3)] {3*x^2};
+          \addplot [very thick, penColor, smooth,domain=(-3:3)] {x^3+1};
+          \node at (axis cs:1,1.8) [anchor=west] {\color{penColor}$f(x)$};  
+          \node at (axis cs:-1,3.3) [anchor=west] {\color{penColor2}$f'(x)$};
+        \end{axis}
+\end{tikzpicture}
+\caption{Ein Plot von $f(x) = x^3+1$ und $f'(x) = 3x^2$.}
+\label{figure:x^3+1}
+\end{marginfigure}
+
+\begin{solution}
+Mit Hilfe der Definition der Ableitung:
+\begin{align*}
+\ddx f(x) &= \lim_{h\to 0}\frac{(x+h)^3 + 1 - (x^3 +1)}{h}\\
+&= \lim_{h\to 0}\frac{x^3+3x^2h+3xh^2 + h^3 + 1 - x^3 -1}{h}\\
+&= \lim_{h\to 0}\frac{3x^2h+3xh^2 + h^3}{h}\\
+&= \lim_{h\to 0}(3x^2+3xh + h^2)\\
+&= 3x^2.
+\end{align*}
+ergleichen Sie Abbildung~\ref{figure:x^3+1}.
+\end{solution}
+
+
+
+Als nächstes betrachten wir die Ableitung einer Funktion, die nicht stetig über $\R$ ist:
+
+
+\begin{example}
+Berechnen Sie:
+\[
+\dd t \frac{1}{t}.
+\]
+\end{example}
+
+\begin{solution}
+Mit Hilfe der Definition der Ableitung:
+\begin{align*}
+\dd{t}\frac{1}{t}&=\lim_{ h\to0}\frac{\frac{1}{t+ h} - \frac{1}{t}}{h} \\
+&=\lim_{h\to0}\frac{\frac{t}{t(t+ h)} - \frac{t+ h}{t(t+ h)}}{h} \\
+&=\lim_{h\to0}\frac{\frac{t-(t+ h)}{t(t+ h)}}{h} \\
+&=\lim_{h\to0}\frac{t-t- h}{t(t+ h) h} \\
+&=\lim_{h\to0}\frac{- h}{t(t+ h) h} \\
+&=\lim_{h\to0}\frac{-1}{t(t+ h)}\\
+&=\frac{-1}{t^2}.
+\end{align*}
+Diese Funktion ist differenzierbar über allen Zahlen ausser $t=0$ (vergleichen Sie Abbildung~\ref{figure:plot1/x}).
+\end{solution}
+\begin{marginfigure}
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-3:3,
+            ymax=4,
+            ymin=-4,
+            samples=100,
+            axis lines =middle, xlabel=$t$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west}
+          ]
+          \addplot [very thick, penColor2, smooth,domain=(-3:-.1)] {-1/x^2};
+          \addplot [very thick, penColor2, smooth,domain=(.1:3)] {-1/x^2};
+	  \addplot [very thick, penColor, smooth,domain=(-3:-.1)] {1/x};
+          \addplot [very thick, penColor, smooth,domain=(.1:3)] {1/x};
+          \node at (axis cs:1,1.3) [anchor=west] {\color{penColor}$f(t)$}; 
+          \node at (axis cs:1,-1.1) [anchor=west] {\color{penColor2}$f'(t)$};
+        \end{axis}
+\end{tikzpicture}
+\caption{Ein Plot von $f(t) = \frac{1}{t}$ und $f'(t) = \frac{-1}{t^2}$.}
+\label{figure:plot1/x}
+\end{marginfigure}
+
+Wie Sie wahrscheinlich bereits vermutet haben, besteht ein Zusammenhang zwischen der Stetigkeit und der Differenzierbarkeit.
+
+
+
+\begin{mainTheorem}[Differenzierbarkeit impliziert Stetigkeit]\label{theorem:diff-cont}
+Falls $f(x)$ beim Punkt $x=a$ differenzierbar ist, dann ist $f(x)$ an diesem Punkt auch stetig.
+\end{mainTheorem}
+
+\begin{proof}
+Wir möchten zeigen, dass $f(x)$ bei $x=a$ stetig ist, also müssen wir zeigen dass gilt:
+\[
+\lim_{x\to a} f(x) = f(a).
+\]
+Also:
+\begin{align*}
+\lim_{x\to a} \left(f(x) - f(a)\right) &= \lim_{x\to a} \left((x-a)\frac{f(x) - f(a)}{x-a}\right) &\text{Multiplizieren und teilen durch $(x-a)$.} \\
+&= \lim_{h\to 0} h \cdot \frac{f(a+h) - f(a)}{h} &\text{Setze $x = a+h$.} \\
+&= \left(\lim_{h\to 0} h\right) \left(\lim_{h\to 0}\frac{f(a+h) - f(a)}{h}\right) &\text{Grenzwertsatz.} \\
+&= 0\cdot f'(a) = 0.
+\end{align*}
+Da 
+\[
+\lim_{x\to a}\left(f(x) - f(a)\right) = 0 
+\]
+wird gezeigt, dass $\lim_{x\to a} f(x) = f(a)$, und damit $f(x)$ stetig ist.
+\end{proof}
+
+Dieser Satz wird oft auch durch die umgekehrte Aussage formuliert:
+\begin{quote}
+Falls $f(x)$ nicht stetig ist bei $x=a$, dann ist $f(x)$ nicht differenzierbar bei $x=a$.
+\end{quote}
+
+
+
+
+
+\begin{exercises}
+
+
+\begin{exercise} 
+Die Linie $y = 7x-4$ sei eine Tangente zu $f(x)$ bei $x=2$, finden Sie $f(2)$ und $f'(2)$.
+\begin{answer}
+$f(2) =  10$ und $f'(2) = 7$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Betrachten Sie die Plots von vier verschiedenen Funktionen:
+\begin{fullwidth}
+\[
+\begin{array}{cccc}
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-3:3,
+            width=2in,
+            ymax=4,
+            ymin=-4,
+            %samples=100,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west}
+          ]
+          \addplot [very thick, penColor, smooth,domain=(-3:3)] {x^4-4*x^3+4*x^2};
+        \end{axis}
+\end{tikzpicture} & 
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-3:3,
+            width=2in,
+            ymax=4,
+            ymin=-4,
+            %samples=100,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west}
+          ]
+          \addplot [very thick, penColor, smooth,domain=(-3:3)] {3*x^2-6*x};
+        \end{axis}
+\end{tikzpicture} & 
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-3:3,
+            width=2in,
+            ymax=4,
+            ymin=-4,
+            %samples=100,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west}
+          ]
+          \addplot [very thick, penColor, smooth,domain=(-3:3)] {x^3-3*x^2+2};
+        \end{axis}
+\end{tikzpicture} & 
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-3:3,
+            width=2in,
+            ymax=4,
+            ymin=-4,
+            %samples=100,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west}
+          ]
+          \addplot [very thick, penColor, smooth,domain=(-3:3)] {4*x^3-12*x^2 + 8*x};
+        \end{axis}
+\end{tikzpicture} \\
+p(x) & q(x) & r(x) & s(x)
+\end{array}
+\]
+\end{fullwidth}
+Zwei dieser Funktionen sind Ableitungen der anderen Funktionen. Welche?
+\begin{answer}
+$p'(x) = s(x)$ and $r'(x) = q(x)$
+\end{answer}
+\end{exercise}
+
+
+\begin{exercise}
+Wenn $f(3) = 6$ und $f(3.1) = 6.4$, schätzen Sie $f'(3)$ ab.
+\begin{answer}
+$f'(3)\approx 4$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Wenn $f(-2) = 4$ und $f(-2+h) = (h+2)^2$, berechnen Sie $f'(-2)$.
+\begin{answer}
+$f'(-2) = 4$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Wenn $f'(x) = x^3$ und $f(1) = 2$, schätzen Sie $f(1.2)$ ab.
+\begin{answer}
+$f(1.2) \approx 2.2$
+\end{answer}
+\end{exercise}
+
+
+\begin{marginfigure}[0in]
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=0:6,
+            ymax=4,
+            ymin=-1,
+            samples=100,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            grid=both,
+            grid style={dashed, gridColor},
+            xtick={0,...,6},
+            ytick={-1,...,4},
+          ]
+          \addplot [very thick, penColor, smooth,domain=(3:6)] {3-abs(sin(deg(pi*x/3)))};
+          \addplot [very thick, penColor, smooth,domain=(0:3)] {3-abs(sin(deg(pi*x/3)))};
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(4.5,2)};  %% open hole
+        \end{axis}
+\end{tikzpicture}
+\caption{Ein Plot von $f(x)$.}
+\label{figure:plot-cont-diff}
+\end{marginfigure}
+\begin{exercise}
+Betrachten Sie den Plot von $f(x)$ in Abbildung~\ref{figure:plot-cont-diff}. 
+\begin{enumerate}
+\item In welchen Intervallen von $[0,6]$ ist $f(x)$ stetig? 
+\item In welchen Intervallen von $[0,6]$ ist $f(x)$ differenzierbar?
+\item Skizzieren Sie einen Plot von $f'(x)$.  
+\end{enumerate}
+\begin{answer}
+(a) $(0,4.5)\cup(4.5,6)$, (b) $(0,3)\cup(3,4.5)\cup(4.5,6)$, (c) See Figure\begin{marginfigure}[0in]
+  \begin{tikzpicture}
+	\begin{axis}[
+            domain=0:6,
+            ymax=1.5,
+            ymin=-1.5,
+            samples=100,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            grid=both,
+            grid style={dashed, gridColor},
+            xtick={0,...,6},
+            ytick={-1,...,1},
+          ]
+          \addplot [very thick, penColor, smooth,domain=(0:3)] {-(pi/3)*cos(deg(pi*x/3)))};
+          \addplot [very thick, penColor, smooth,domain=(3:6)] {-(pi/3)*cos(deg(pi*(x-3)/3)))};
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(3,pi/3)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(3,-pi/3)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(4.5,0)};  %% open hole
+        \end{axis}
+\end{tikzpicture}
+Answer 2.1.6: (c) a sketch of $f'(x)$.
+\end{marginfigure}
+\end{answer}
+\end{exercise}
+
+\break
+
+\begin{exercise}
+Sei $f(x) = x^2 -4$. Benutzen Sie die Definition der Ableitung um
+$f'(-3)$ zu berechnen und finden Sie die Gleichung der Tangente zu der Kurve bei
+$x=-3$.
+\begin{answer}
+$f'(-3) = -6$ with tangent line $y = -6x -13$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Sei $f(x) = \frac{1}{x+2}$. Benutzen Sie die Definition der Ableitung um
+$f'(1)$ zu berechnen und finden Sie die Gleichung der Tangente zu der Kurve bei
+$x=1$.
+\begin{answer}
+$f'(1) = -1/9$ with tangent line $y = \frac{-1}{9}x + \frac{4}{9}$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Sei $f(x) = \sqrt{x-3}$. Benutzen Sie die Definition der Ableitung um
+$f'(5)$ zu berechnen und finden Sie die Gleichung der Tangente zu der Kurve bei
+$x=5$.
+\begin{answer}
+$f'(5) = \frac{1}{2\sqrt{2}}$ with tangent line $y = \frac{1}{2\sqrt{2}}x -\frac{1}{2\sqrt{2}}$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Sei $f(x) = \frac{1}{\sqrt{x}}$. Benutzen Sie die Definition der Ableitung um $f'(4)$ zu berechnen und finden Sie die Gleichung der Tangente zu der Kurve bei $x=4$.
+\begin{answer}
+$f'(4) = \frac{-1}{16}$ with tangent line $y = \frac{-1}{16}x +\frac{3}{4}$
+\end{answer}
+\end{exercise}
+
+\end{exercises}
+
+
+
+
+\section{Die grundlegenden Ableitungsregeln}
+
+
+Es ist mühsam, jedesmal einen Grenzwert zu berechnen, wenn wir die Ableitung einer Funktion bestimmen möchten. Glücklicherweise erlaubt uns eine kleine Sammlung von Beispielen und Regeln, die Ableitung von fast jeder Funktion zu berechnen.
+
+
+\subsection*{Die Ableitung einer Konstanten}
+
+Die einfachste Funktion ist eine konstante Funktion. Erinnern Sie sich daran, dass die Ableitung eigentlich nichts anderes als die Änderungsrate der Funktion an einem bestimmten Punkt ist (oder anders gesagt die Steigung der Funktion an diesem Punkt). Die Ableitung einer konstanten Funktion ist also immer Null. Zum Beispiel:
+\begin{itemize}
+\item Der Plot einer konstanten Funktion besteht aus einer horizontalen Linie, somit ist die Steigung der Tangente 0.
+\item $x(t)$ bezeichne den Ort eines Objektes zum Zeitpunkt $t$. Ist $x(t)$ konstant, so bewegt sich das Objekt nicht und damit ist seine Geschwindigkeit Null. Also ist $\dd{t} x(t) = 0$.
+\item $v(t)$ bezeichne die Geschwindigkeit eines Objektes abhängig von der Zeit $t$. Ist $v(t)$ konstant, so ist seine Beschleunigung Null. Damit ist $\dd{t} v(t) = 0$.
+\end{itemize}
+Diese Beispiele führen uns zum nächsten Satz:
+
+
+\marginnote{Um etwas Intuition zu gewinnen, sollten Sie die Ableitung von $f(x) = 6$ mit Hilfe der Definition der Ableitung bestimmen!}
+\begin{mainTheorem}[Die Ableitung einer Konstante]\index{Ableitungsregeln!Konstante}\index{Die Ableitung einer Konstante}
+Sei $c$ eine Konstante,
+\[
+\ddx c = 0.
+\]
+\end{mainTheorem}
+
+\begin{proof}
+Wir benützen die Definition der Ableitung:
+\begin{align*}
+\ddx c &= \lim_{h\to 0}\frac{c-c}{h}\\
+&= \lim_{h\to 0} \frac{0}{h}\\
+&= \lim_{h\to 0} 0 = 0.
+\end{align*}
+\end{proof}
+
+
+\subsection*{Die Potenzregel}
+
+Nun untersuchen wir die Abletitungen verscheidener Funktionen mit jeweils einer Potenz einer Variablen.
+ Hier haben wir eine schöne Regel:
+
+\marginnote{Um Intuition zu gewinnen, leiten Sie die Funktion 
+  $f(x) = x^3$ mit Hilfe der Definition der Ableitung ab!}
+\begin{mainTheorem}[Potenzregel]\index{Ableitungsregeln!Potenz}\index{Potenzregel}\label{T:powerrule}
+Für jede reelle Zahl $n$, 
+\[
+\ddx x^n = n x^{n-1}.
+\]
+\end{mainTheorem}
+\marginnote[1in]{Der \textbf{binomische Lehrsatz}\index{Binomischer Lehrsatz} sagt, dass wenn $n$ eine nichtnegative ganze Zahl ist, gilt
+\[
+(a+b)^n = a^nb^0 + \binom{n}{1} a^{n-1}b^1 + \dots + \binom{n}{n-1} a^{1}b^{n-1} +  a^{0}b^n   
+\]
+wobei
+\[
+\binom{n}{k} = \frac{n!}{k!(n-k)!}.
+\]
+und \[ n! = 1 \cdot 2 \cdot 3 \cdot...\cdot n \]
+}
+\begin{proof}
+Der Beweis wird hier nur für positive, ganzzahlige $n$ geführt. Wir benützen die Definition der Ableitung:
+\[
+\ddx x^n = \lim_{ h\to0} \frac{(x+ h)^n-x^n}{h}.
+\]
+Der Term $(x+h)^n$ wird ausmultipliziert
+\[
+\ddx x^n=\lim_{h\to0} \frac{x^n + \binom{n}{1}x^{n-1} h + \binom{n}{2}x^{n-2} h^2+\cdots+\binom{n}{n-1}x h^{n-1} +  h^n-x^n}{h}
+\]
+Wir gebrauchen den binomischen Lehrsatz und schreiben $\binom{n}{k}$ für die Koeffeffizienten. Die Terme $x^{n}$ und $-x^{n}$ streichen sich heraus. Mit 
+$\binom{n}{1}= \binom{n}{n-1}= n$, schreiben wir
+\begin{align*}
+\ddx x^n&=\lim_{h\to0} \frac{nx^{n-1} h + \binom{n}{2}x^{n-2} h^2+\cdots+\binom{n}{n-1}x h^{n-1} +  h^n}{h} \\
+&=\lim_{h\to0} nx^{n-1} + \binom{n}{2}x^{n-2} h+\cdots+\binom{n}{n-1}x h^{n-2} +  h^{n-1}.
+\end{align*}
+Da jeder Term ausser dem ersten einen Faktor $h$ besitzt, fallen diese für $h \to 0$ weg:
+\[
+\ddx x^n = \lim_{ h\to0}\frac{(x+ h)^n-x^n}{h} = nx^{n-1}.
+\]
+\end{proof}
+
+Wir betrachten nun einige Beispiele, beginnend mit einem einfachen Beispiel:
+
+\begin{example}
+Berechnen Sie
+\[
+\ddx x^{13}.
+\]
+\end{example}
+\begin{solution}
+Mit Hilfe der Potenzregel schreiben wir
+\[
+\ddx x^{13} = 13x^{12}.
+\]
+\end{solution}
+
+Teilweise ist es nicht ganz so offensichtlich, dass man die Potenzregel anwenden sollte:
+
+\begin{example}
+Berechnen Sie
+\[
+\ddx \frac{1}{x^4}.
+\]
+\end{example}
+\begin{solution}
+Mit Hilfe der Potenzregel schreiben wir
+\[
+\ddx \frac{1}{x^4} = \ddx x^{-4} = -4x^{-5}.
+\]
+\end{solution}
+
+Die Potenzregel kann auch für Wurzeln angewendet werden, sobald wir diese als Exponenten schreiben:
+
+\begin{example}
+Berechnen Sie
+\[
+\ddx \sqrt[5]{x}.
+\]
+\end{example}
+\begin{solution}
+Mit Hilfe der Potenzregel schreiben wir
+\[
+\ddx \sqrt[5]{x} = \ddx x^{1/5} = \frac{x^{-4/5}}{5}.
+\]
+\end{solution}
+
+
+
+
+
+
+\subsection*{Die Summenregel}
+
+Die Summenregel besagt, dass wir die Änderungsraten zweier Funktionen addieren können um die Änderungsrate der Summe der beiden Funktionen zu bestimmen.  Zum Beispiel für die Geschwindigkeit (die die Änderungsrate der Position ist): Die Summenregel besagt, dass die Geschwindigkeit einer Person die sich in einem Bus bewegt gleich der Geschwindigkeit des Busses plus der Geschwindigkeit der Person ist.
+
+
+\begin{mainTheorem}[Summenregel]\index{Ableitungsregeln!Summe}\index{Summenregel}\label{theorem:sum rule}
+Seien $f(x)$ und $g(x)$ differenzierbar und $c$ eine Konstante, so gilt 
+\begin{enumerate}
+\item\label{SR:1} $\ddx \big( f(x) + g(x)\big) = f'(x) + g'(x)$,
+\item $\ddx \big( f(x) - g(x)\big) = f'(x) - g'(x)$,
+\item $\ddx \big(c\cdot f(x)\big) = c\cdot f'(x)$.
+\end{enumerate}
+\end{mainTheorem}
+
+\begin{marginfigure}
+\begin{tikzpicture}
+	\begin{axis}[
+            clip=false,
+            domain=0:5, 
+            ymin=0, ymax=5,
+            xlabel=$x$, ylabel=$y$,
+            axis lines=center,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            xtick={3},ytickmin=1,ytickmax=0,
+            xticklabels={$a$},
+            axis on top,
+          ]          
+                    
+          \addplot [penColor5,very thick] plot coordinates {(4,3/2.5) (4,4/2.5)};
+          \addplot [dashed, very thick, textColor] plot coordinates {(3,3/2.5) (4,3/2.5)};
+
+          \addplot [penColor4,very thick] plot coordinates {(4,3/1.5+.5) (4,4/1.5+.5)};
+          \addplot [dashed, very thick, textColor] plot coordinates {(3,3/1.5+.5) (4,3/1.5+.5)};
+
+          \addplot [very thick, penColor5] plot coordinates {(4,3/2.5+3/1.5+.5) (4,3/1.5+.5 + 4/2.5)};
+          \addplot [very thick, penColor4] plot coordinates {(4,3/1.5+.5 + 4/2.5) (4,4/2.5 + 4/1.5 +.5)};
+          \addplot [dashed, very thick, textColor] plot coordinates {(3,3/2.5+3/1.5+.5) (4,3/2.5+3/1.5+.5)};
+
+          \addplot [dashed, textColor] plot coordinates {(3,0) (3,3/2.5+3/1.5+.5)};
+        
+          \addplot [very thick,penColor,smooth] {x/2.5};
+          \addplot [very thick,penColor2,smooth] {x/1.5 +.5};         
+          \addplot [very thick,penColor3,smooth,domain=(0:4.5)] {x/2.5+x/1.5 +.5};         
+
+          \node at (axis cs:1.7,1) [anchor=west,penColor] {$f(x)$};
+          \node at (axis cs:2.2,2.4) [anchor=west,penColor2] {$g(x)$};
+          \node at (axis cs:1.2,3) [anchor=west,penColor3] {$f(x)+g(x)$};
+
+          \node at (axis cs:4,1.4) [anchor=west,penColor5] {$f'(a)h$};
+          \node at (axis cs:4,2.9) [anchor=west,penColor4] {$g'(a)h$};
+          \node at (axis cs:4,4.3) [anchor=west] {${\color{penColor5}f'(a)h}+{\color{penColor4}g'(a)h}$};
+          \node at (axis cs:3.5,1.2) [anchor=north] {$\underbrace{\hspace{.50in}}_{h}$};
+
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(3,3/2.5)};  %% closed hole          
+          \addplot[color=penColor2,fill=penColor2,only marks,mark=*] coordinates{(3,3/1.5+.5)};  %% closed hole          
+          \addplot[color=penColor3,fill=penColor3,only marks,mark=*] coordinates{(3,3/2.5+3/1.5+.5)};  %% closed hole          
+        \end{axis}
+\end{tikzpicture}
+\label{figure:sum-rule}
+\caption{Eine geometrische Interpretation der Summenregel. 
+\[
+\frac{\Delta y}{\Delta x}\approx \frac{f'(a)h+g'(a)h}{h} = f'(a) + g'(a).
+\]}
+\end{marginfigure}
+
+\begin{proof}
+Der Beweis ist nur für Teil~\ref{SR:1} oben, der Rest lässt sich auf ähnlichem Wege beweisen.
+\begin{align*}
+\ddx\big(f(x)+g(x)\big) &= \lim_{ h\to 0} {f(x+h)+g(x+ h) - (f(x)+g(x))\over  h}  \\
+&= \lim_{ h\to 0} {f(x+h)+g(x+ h) - f(x)-g(x)\over  h}  \\
+&= \lim_{ h\to 0} {f(x+h)-f(x) +g(x+ h) -g(x)\over  h}  \\
+&= \lim_{ h\to 0} \left({f(x+h)-f(x)\over  h}  +{g(x+ h) -g(x)\over  h}\right)  \\
+&= \lim_{ h\to 0} {f(x+h)-f(x)\over  h}  +
+\lim_{ h\to 0} {g(x+ h) -g(x)\over  h}  \\
+&=f'(x)+g'(x).
+\end{align*}
+\end{proof}
+
+
+
+\begin{example}
+Berechnen Sie
+\[
+\ddx \left( x^5+\frac{1}{x}\right).
+\] 
+\end{example}
+
+\begin{solution}
+Schreiben Sie
+\begin{align*}
+\ddx \left(x^5+\frac{1}{x}\right) &= \ddx x^5 + \ddx x^{-1} \\
+&=5x^4 - x^{-2}.
+\end{align*}
+\end{solution}
+
+\begin{example}
+Berechnen Sie
+\[
+\ddx \left(\frac{3}{\sqrt[3]{x}}-2\sqrt{x}+\frac{1}{x^7}\right).
+\]
+\end{example}
+
+\begin{solution}
+Schreiben Sie
+\begin{align*}
+\ddx \left(\frac{3}{\sqrt[3]{x}}-2\sqrt{x}+\frac{1}{x^7}\right) &= 3\ddx x^{-1/3} -2\ddx x^{1/2}+\ddx x^{-7}\\
+&=-x^{-4/3} - x^{-1/2}-7x^{-8}.
+\end{align*}
+\end{solution}
+
+
+
+\subsection*{Die Ableitung von $\textit{e}^\textit{x}$}
+
+Wir haben bis hier noch nichts über Ableitungen von Exponentialfunktionen angeschaut. Starten wir mit der Definition der Ableitung:
+
+\begin{align*}
+\ddx a^x &=\lim_{h\to 0} \frac{a^{x+h}-a^x}{h} \\
+&=\lim_{h\to 0} \frac{a^xa^{h}-a^x}{h} \\
+&=\lim_{h\to 0} a^x\frac{a^{h}-1}{h} \\
+&=a^x\lim_{h\to 0} \frac{a^{h}-1}{h} \\
+&=a^x \cdot \underbrace{\text{(constant)}}_{\lim_{h\to 0} \frac{a^{h}-1}{h}}
+\end{align*}
+Es gibt hier nun zwei interessante Dinge zu beachten: Übrig bleibt ein Grenzwert, in dem nur noch $h$ vorkommt, aber nicht $x$. Das bedeutet, dass $\lim_{h\to 0} (a^h-1)/h$ eine Zahl sein muss, also eine Konstante. Dies bedeutet dass $a^x$ eine bemerkenswerte Eigenschaft besitzt: Ihre Ableitung ist eine Konstante multipliziert mit sich selbst (mit $a^x$). Leider können wir den Grenzwert
+\[
+\lim_{h\to 0} \frac{a^h-1}{h}.
+\]
+nicht allgemein bestimmen (die Mathematik dazu fehlt uns). Wir können aber ein paar Beispiele untersuchen: 
+. Betrachten Sie $(2^h-1)/h$ und $(3^h-1)/h$:
+\begin{fullwidth}
+\[
+\begin{tchart}{ll}
+ h &     (2^h-1)/h\\ \hline
+ -1 & .5  \\
+-0.1 &  \approx0.6700 \\
+-0.01 & \approx0.6910 \\
+-0.001 & \approx0.6929 \\
+-0.0001 & \approx0.6931 \\
+-0.00001 & \approx0.6932 \\
+\end{tchart}
+\qquad
+\begin{tchart}{ll}
+ h &     (2^h-1)/h\\ \hline
+ 1 & 1  \\
+ 0.1 &  \approx0.7177 \\
+ 0.01 & \approx0.6956 \\
+ 0.001 & \approx0.6934 \\
+ 0.0001 & \approx0.6932 \\
+ 0.00001 & \approx0.6932 \\
+\end{tchart}
+\qquad\qquad
+\begin{tchart}{ll}
+ h &     (3^h-1)/h\\ \hline
+-1 & \approx 0.6667  \\
+-0.1 &  \approx1.0404  \\
+-0.01 & \approx1.0926 \\
+-0.001 & \approx1.0980 \\
+-0.0001 & \approx1.0986 \\
+-0.00001 & \approx1.0986 \\
+\end{tchart}
+\qquad
+\begin{tchart}{ll}
+ h &     (3^h-1)/h\\ \hline
+ 1 & 2  \\
+ 0.1 &  \approx1.1612 \\
+ 0.01 & \approx1.1047 \\
+ 0.001 & \approx1.0992 \\
+ 0.0001 & \approx1.0987 \\
+ 0.00001 & \approx1.0986 \\
+\end{tchart}
+\]
+\end{fullwidth}
+
+Diese Tabellen beweisen kein Muster, aber es stellt sich heraus dass
+\[
+\lim_{h\to 0}\frac{2^h-1}{h} \approx .7 \qquad\text{und}\qquad \lim_{h\to 0} \frac{3^h-1}{h} \approx 1.1.
+\]
+Wenn Sie weitere Beispiele berechnen, stellen Sie fest, dass der Grenzwert direkt von $a$ abhängt. Ein grösseres $a$ bedeutet einen grösseren Grenzwert, ein kleineres $a$ bedeutet einen kleineren Grenzwert.
+Wie wir bereits in der Tabelle oben gesehen haben, sind einige Grenzwerte grösser als 1, andere kleiner als 1. Irgendwo zwischen $a=2$und $a=3$ wird der Grenzwert genau 1 betragen. Dies passiert für
+\[
+a = e = 2.718281828459045\dots.
+\]
+Dies führt uns zur nächsten Definition:
+\begin{definition}\index{Eulersche Zahl}
+Die Eulersche Zahl ist definiert als die Zahl $e$, so dass
+\[
+\lim_{h\to 0} \frac{e^h-1}{h} = 1.
+\]
+\end{definition}
+Nun sehen wir, dass die Funktion $e^x$ eine  sehr beeindruckende Eigenschaft besitzt:
+
+\begin{mainTheorem}[Die Ableitung von $\textit{e}^\textit{x}$]\index{ex@$e^x$}\index{Ableitung!von ex@von $e^x$}
+\[
+\ddx e^x = e^x.
+\]
+\end{mainTheorem}
+\begin{proof}  
+Mit der Definition der Ableitung
+\begin{align*}
+\ddx e^x&=\lim_{h\to 0} \frac{e^{x+h}-e^x}{h} \\
+&=\lim_{h\to 0} \frac{e^xe^{h}-e^x}{h} \\
+&=\lim_{h\to 0} e^x\frac{e^{h}-1}{h} \\
+&=e^x\lim_{h\to 0} \frac{e^{h}-1}{h} \\
+&=e^x.
+\end{align*}
+\end{proof}
+
+
+Also ist $e^x$ seine eigene Ableitung. Mit anderen Worten; die Steigung der Funktion $e^x$ ist gleich gross wie der jeweilige Funktionswert. Die Funktion $f(x)=e^x$ geht durch den Punkt $(a,e^x)$ und besitzt dort die Steigung $e^a$, egal wie gross $a$ ist.
+ 
+
+
+
+\begin{example}
+Berechnen Sie
+\[
+\ddx\left(8\sqrt{x} + 7e^x \right)
+\]
+\end{example}
+
+\begin{solution}
+Schreiben Sie
+\begin{align*}
+\ddx\left(8\sqrt{x} + 7e^x \right) &= 8\ddx x^{1/2} + 7\ddx e^x\\
+&= 4x^{-1/2} + 7 e^x.
+\end{align*}
+\end{solution}
+
+
+\begin{exercises}
+
+\noindent Berechnen Sie
+
+\twocol
+
+%% constants
+
+\begin{exercise} $\ddx 5$
+\begin{answer} $0$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} $\ddx -7$
+\begin{answer} $0$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} $\ddx e^7$
+\begin{answer} $0$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} $\ddx \frac{1}{\sqrt{2}}$
+\begin{answer} $0$
+\end{answer}
+\end{exercise}
+
+%% powers
+
+\begin{exercise} $\ddx x^{100}$
+\begin{answer} $100x^{99}$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} $\ddx x^{-100}$
+\begin{answer} $-100x^{-101}$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx \frac{1}{x^5}$
+\begin{answer} $-5x^{-6}$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx x^\pi$
+\begin{answer} $\pi x^{\pi-1}$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx x^{3/4}$
+\begin{answer} $(3/4)x^{-1/4}$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx \frac{1}{(\sqrt[7]{x})^9}$
+\begin{answer} $-(9/7)x^{-16/7}$
+\end{answer}\end{exercise}
+
+%% sums
+
+\begin{exercise} $\ddx \left(5x^3+12x^2-15\right)$
+\begin{answer} $15x^2+24x$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx \left(-4x^5 + 3x^2 - \frac{5}{x^2}\right)$
+\begin{answer} $-20x^4+6x+10/x^3$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx 5(-3x^2 + 5x + 1)$
+\begin{answer} $-30x+25$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx \left(3\sqrt{x} + \frac{1}{x} - x^e\right)$
+\begin{answer} $\frac{3}{2}x^{-1/2}-x^{-2}-ex^{e-1}$
+\end{answer}\end{exercise}
+
+
+\begin{exercise} $\ddx \left(\frac{x^2}{x^7}+\frac{\sqrt{x}}{x}\right)$
+\begin{answer} $-5x^{-6} - x^{-3/2}/2$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx e^x$
+\begin{answer} $e^x$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx x^e$
+\begin{answer} $ex^{e-1}$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx 3e^x$
+\begin{answer} $3e^x$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx \left(3x^4 -7x^2 +12 e^x\right)$
+\begin{answer} $12x^3-14x +12 e^x$
+\end{answer}\end{exercise}
+\endtwocol
+
+\noindent Multiplizieren Sie aus oder kürzen Sie, um die folgenden Aufgaben zu berechnen:
+
+\twocol
+
+\begin{exercise} $\ddx \left((x+1)(x^2+2x-3)\right)$
+\begin{answer} $3x^2+6x-1$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx \frac{x^3 -2x^2 -5x + 6}{(x-1)}$
+\begin{answer} $2x-1 $
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx \frac{x-5}{\sqrt{x}-\sqrt{5}}$
+\begin{answer} $x^{-1/2}/2 $
+\end{answer}\end{exercise}
+
+\begin{exercise} $\ddx \left((x+1)(x+1)(x-1)(x-1)\right)$
+\begin{answer} $4x^3-4x$
+\end{answer}\end{exercise}
+
+\endtwocol
+
+\begin{exercise} Nehmen Sie an, dass die Position eines Objektes zum Zeitpunkt $t$ durch die Funktion
+$f(t)=-49 t^2/10+5t+10$ gegeben ist. Finden Sie eine Funktion für die Geschwindigkeit des Objektes zum Zeitpunkt $t$. Die Beschleunigung eines Objektes ist die Änderungsrate seiner Geschwindigkeit, was bedeutet, dass sie die Ableitung der Geschwindigkeitsfunktion ist. Finden Sie die Beschleunigung des Objektes zum Zeitpunkt $t$T
+\begin{answer} $-49t/5+5$, $-49/5$
+\end{answer}\end{exercise}
+
+\begin{exercise} Sei $f(x) =x^3$ und $c= 3$. Skizzieren Sie den Graphen von $f(x)$,
+$cf(x)$, $f'(x)$, und $(cf(x))'$ im selben Diagramm.
+\begin{answer}
+See Figure\begin{marginfigure}[0in]
+  \begin{tikzpicture}
+	\begin{axis}[
+            domain=-3:3,
+            ymax=10,
+            ymin=-10,
+            samples=100,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+          ]
+          \addplot [very thick, penColor, smooth,domain=(-3:3)] {x^3};
+          \addplot [very thick, penColor2, smooth,domain=(-3:3)] {3*x^3};
+          \addplot [very thick, penColor!50!background, smooth,domain=(-3:3)] {3*x^2};
+          \addplot [very thick, penColor2!50!background, smooth,domain=(-3:3)] {9*x^2};
+          \node at (axis cs:1.5,3) [anchor=west] {\color{penColor}$f(x)$}; 
+          \node at (axis cs:-1,-3) [anchor=west] {\color{penColor2}$cf(x)$};
+          \node at (axis cs:-1.6,3) [anchor=west] {\color{penColor!50!background}$f'(x)$};
+          \node at (axis cs:-.9,7) [anchor=west] {\color{penColor2!50!background}$(cf(x))'$};
+        \end{axis}
+\end{tikzpicture}
+Answer 2.2.21.
+\end{marginfigure}
+\end{answer}
+\end{exercise}
+
+%\begin{exercise} 
+%The general polynomial $P$ of degree $n$ in the variable $x$ has the
+%form $P(x)= \sum _{k=0 } ^n a_k x^k = a_0 + a_1 x + \ldots + a_n
+%x^n$. What is the derivative (with respect to $x$) of $P$?
+%\begin{answer} $\sum_{k=1}^n ka_kx^{k-1}$
+%\end{answer}\end{exercise}
+
+\begin{exercise} 
+Finden Sie ein kubisches Polynom, dessen Graph eine horizontale Tangente an
+ $(-2 ,5)$ und $(2, 3)$ besitzt.
+\begin{answer} $x^3/16-3x/4+4$
+\end{answer}\end{exercise}
+
+\begin{exercise}
+  Finden Sie eine Gleichung für die Tangente zu $f(x) = x^3/4 - 1/x$ im Punkt $x=-2$.
+\begin{answer} $y=13x/4+5$
+\end{answer}\end{exercise}
+
+\begin{exercise} 
+  Finden Sie eine Gleichung für die Tangente zu $f(x)= 3x^2 - \pi ^3$ im Punkt
+  $x= 4$.
+\begin{answer} $y=24x-48-\pi^3$
+\end{answer}
+\end{exercise}
+
+\end{exercises}

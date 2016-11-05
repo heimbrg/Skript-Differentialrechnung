@@ -1,0 +1,549 @@
+\chapter{Grenzwerte}
+
+
+\section{Die Grundlegende Idee}{}{}
+
+
+
+Betrachten Sie die Funktion:
+\[
+f(x) = \frac{x^2 - 3x + 2}{x-2}
+\]
+Diese Funktion $f(x)$ ist im Punkt $x=2$ nicht definiert, wir können aber $f(x)$ für alle anderen Werte in einem Plot darstellen, vergleichen Sie dazu Abbildung~\ref{plot:(x^2 - 3x + 2)/(x-2)}. Betrachten Sie nun die Tabelle~\ref{table:(x^2 - 3x + 2)/(x-2)}, in dieser Tabelle können wir folgendes sehen: Je näher $x$ zum Wert $2$ geht, desto näher geht $f(x)$ gegen den Wert $1$ ($f(x)$ strebt gegen $1$). Wir schreiben: 
+\[
+\text{Für $x \to 2$, $f(x) \to 1$}\qquad\text{oder}\qquad \lim_{x\to 2} f(x) = 1.
+\]
+Intuitiv gilt also $\lim_{x\to a} f(x) = L$, wenn der Wert von $f(x)$ sich $L$ beliebig nähert wenn man $x$ genügend nahe (aber nicht gleich) $a$ macht. Dies führt uns zur Definition des 
+\textit{Grenzwertes}.
+\begin{marginfigure}[-5in]
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-2:4,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            grid=both,
+            grid style={dashed, gridColor},
+            xtick={-2,...,4},
+            ytick={-3,...,3},
+          ]
+	  \addplot [very thick, penColor, smooth] {x-1};
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(2,1)};  %% open hole
+        \end{axis}
+\end{tikzpicture}
+\caption{Der Plot der Funktion $f(x)=\protect\frac{x^2 - 3x + 2}{x-2}$.}
+\label{plot:(x^2 - 3x + 2)/(x-2)}
+\end{marginfigure}
+
+\begin{margintable}[-1in]
+\[
+\begin{tchart}{ll}
+ x & f(x) \\ \hline
+ 1.7 &  0.7 \\
+ 1.9 &  0.9 \\
+ 1.99 &  0.99 \\
+ 1.999 &  0.999 \\
+  2 &  \text{undefiniert}
+\end{tchart}\qquad
+\begin{tchart}{ll}
+ x & f(x) \\ \hline
+  2 & \text{undefiniert}\\
+ 2.001&  1.001\\
+ 2.01&  1.01\\
+ 2.1 &  1.1 \\
+ 2.3 &  1.3 \\
+\end{tchart}
+\]
+\caption{Werte von $f(x)=\protect\frac{x^2 - 3x + 2}{x-2}$.}
+\label{table:(x^2 - 3x + 2)/(x-2)}
+\end{margintable}
+
+\marginnote[1in]{In gleicher Weise, $\lim_{x\to a}f(x)=L$, wenn es für jedes $\epsilon>0$ ein $\delta > 0$ gibt, so dass für alle $x\ne a$
+  und $a- \delta < x < a+ \delta$, gilt dass $L-\epsilon<
+  f(x)<L+\epsilon$.}
+\begin{definition}\label{def:limit}\index{Grenzwert!Definition}
+Der \textbf{Grenzwert} von $f(x)$ wenn $x$ gegen $a$ geht ist $L$,
+\[
+\lim_{x\to a}f(x)=L,
+\] 
+wenn es für jedes (noch so kleine) $\epsilon>0$ ein $\delta > 0$ gibt, so dass wenn
+\[
+0 < |x-a| < \delta, \qquad\text{auch gilt dass} \qquad |f(x)-L|<\epsilon.
+\] 
+Wenn kein solcher Wert $L$ gefunden werden kann, sagen wir dass $\lim_{x\to a}f(x)$ \textbf{nicht existiert}.
+\end{definition}
+
+In Abbildung~\ref{figure:epsilon-delta}, sehen Sie eine geometrische Interpretation dieser Definition.
+
+\begin{figure}
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=0:2, 
+            axis lines =left, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            xtick={0.7,1,1.3}, ytick={3,4,5},
+            xticklabels={$a-\delta$,$a$,$a+\delta$}, yticklabels={$L-\epsilon$,$L$,$L+\epsilon$},
+            axis on top,
+          ]          
+          \addplot [color=textColor, fill=fill2, smooth, domain=(0:1.570)] {5} \closedcycle;
+          \addplot [color=textColor, dashed, fill=fill1, smooth, domain=(0:1.3)] {4.537} \closedcycle;
+          \addplot [color=textColor, dashed, fill=fill2, domain=(0:.7)] {3.283} \closedcycle;       
+          \addplot [textColor, very thick, smooth, domain=(0:1)] {4};
+          \addplot [color=textColor, fill=background, smooth, domain=(0:0.607)] {3} \closedcycle;
+	  \addplot [draw=none, fill=background, smooth] {x*(x-2)^2+3*x} \closedcycle;
+          \addplot [fill=fill1, draw=none, domain=.7:1.3] {x*(x-2)^2+3*x} \closedcycle;
+          \addplot [textColor, very thick] plot coordinates {(1,0) (1,4)};
+          \addplot [textColor] plot coordinates {(.7,0) (.7,3.283)};
+          \addplot [textColor] plot coordinates {(1.3,0) (1.3,4.537)};
+	  \addplot [very thick,penColor, smooth] {x*(x-2)^2+3*x};
+        \end{axis}
+\end{tikzpicture}
+\caption{Geometrische Interperetation des
+  $(\epsilon,\delta)$-Kriteriums für Grenzwerte.  Ist $0<|x-a|<\delta$, so gilt $a
+  -\delta < x < a+\delta$. Im Diagramm sehen wir, dass für alle solchen $x$ gilt, dass $L - \epsilon< f(x) < L+\epsilon$, und somit
+  $|f(x) - L|<\epsilon$.}
+\label{figure:epsilon-delta}
+\end{figure}
+Es muss nicht in jedem Fall einen Grenzwert geben, wir untersuchen dies an zwei Fällen:
+
+\begin{example}
+Sei $f(x) = \lfloor x\rfloor$. Erklären Sie, weshalb der Grenzwert
+\[
+\lim_{x\to 2} f(x)
+\]
+nicht existiert.
+\end{example}
+
+\begin{marginfigure}[0in]
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-2:4,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            clip=false,
+            %axis on top,
+          ]
+          \addplot [draw=none,, fill=fill1, domain=(0:2)] {2} \closedcycle; %% fill for epsilon  
+          \addplot [color=textColor, dashed, domain=(0:2)] {2};  %% bndry for epsilon  
+          \addplot [draw=none, fill=background, domain=(0:1.8)] {1} \closedcycle;
+          \addplot [color=textColor, dashed, domain=(0:1)] {1};  %% bndry for epsilon  
+          \addplot [draw=none, fill=fill1, domain=(1.8:2)] {1} \closedcycle;
+          \addplot [draw=none, fill=fill1, domain=(2:2.2)] {2} \closedcycle;
+          \addplot [textColor, very thick] plot coordinates {(2,0) (2,2)};
+          \addplot [textColor] plot coordinates {(1.8,0) (1.8,1)};
+          \addplot [textColor] plot coordinates {(2.2,0) (2.2,2)};
+          \addplot [textColor, very thin, domain=(0:2.3)] {0}; % puts the axis back, axis on top clobbers our open holes
+          \addplot [textColor, very thin] plot coordinates {(0,0) (0,2)}; % puts the axis back, axis on top clobbers our open holes
+	  \addplot [very thick, penColor, domain=(-2:-1)] {-2};
+          \addplot [very thick, penColor, domain=(-1:0)] {-1};
+          \addplot [very thick, penColor, domain=(0:1)] {0};
+          \addplot [very thick, penColor, domain=(1:2)] {1};
+          \addplot [very thick, penColor, domain=(2:3)] {2};
+          \addplot [very thick, penColor, domain=(3:4)] {3};
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(-2,-2)};  %% closed hole          
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(-1,-1)};  %% closed hole          
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(0,0)};  %% closed hole          
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(1,1)};  %% closed hole          
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(2,2)};  %% closed hole  
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(3,3)};  %% closed hole                  
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(-1,-2)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(0,-1)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(1,0)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(2,1)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(3,2)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(4,3)};  %% open hole
+        \end{axis}
+\end{tikzpicture}
+\caption{Plot von $f(x)=\lfloor x\rfloor$. Beachten Sie, dass egal welches $\delta>0$ gewählt wird, $f(x)$ höchstens im Intervall $[1,2]$ eingegrenzt werden kann.}
+\label{plot:greatest-integer}
+\end{marginfigure}
+\begin{solution}
+Die Abrundungsfunktion $\lfloor x \rfloor$ liefert zu jeder Zahl die nächste ganze Zahl die kleiner oder gleich wie $x$ ist. Da $f(x)$ für alle reellen Zahlen definiert ist, könnte man auf die Idee kommen, dass der Grenzwert für das Beispiel oben einfach $f(2)=2$ ist. Dies ist jedoch nicht der Fall!. 
+Für $x<2$ gilt $f(x)=1$. Wir finden für $\epsilon =.5$ \textbf{immer} einen Wert von $x$ (gerade links neben $2$) so dass
+\[
+0< |x -2|< \delta, \qquad\text{wobei} \qquad \epsilon < |f(x)-2|.
+\]
+Andererseits gilt $\lim_{x\to 2} f(x)\ne 1$, denn wir finden für
+$\epsilon=.5$, \textbf{immer} ein $x$ (gerade rechts neben $2$) so dass
+\[
+0<|x- 2|<\delta, \qquad\text{wobei} \qquad  \epsilon<|f(x)-1|.
+\]
+Das Problem ist in Abbildung~\ref{plot:greatest-integer} sichtbar. Egal welchen Wert man für $\lim_{x\to 2} f(x)$ wählt, man wird immer ein ähnliches Problem haben.
+\end{solution}
+
+Eine Funktion muss nicht zwingend einen Grenzwert besitzen, selbst wenn ihre Gleichung so harmlos wie die der Abrundungsfunktion ausschaut.
+
+\begin{example}
+Sei $f(x) = \sin\left(\frac{1}{x}\right)$. Erklären Sie, weshalb der Grenzwert
+\[
+\lim_{x\to 0} f(x)
+\]
+nicht existiert.
+\end{example}
+\begin{solution}
+In disem Beispiel oszilliert $f(x)$ ``wild'' herum, sobald $x$ sich $0$ nähert, vgl. Abbildung~\ref{plot:sin 1/x}. Tatsächlich kann man zeigen, dass für jedes   $\delta$, ein Wert für $x$ im Intervall
+\[
+0-\delta < x < 0+\delta
+\]
+existiert, so dass $f(x)$ \textbf{jeden} Wert im Intervall $[-1,1]$ annehmen kann. Also existiert der Grenzwert nicht.
+\end{solution}
+\begin{marginfigure}[-1in]
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-.2:.2,    
+            samples=500,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            yticklabels = {}, 
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            clip=false,
+          ]
+	  \addplot [ thick, penColor, smooth, domain=(-.2:-.02)] {sin(deg(1/x))};
+          \addplot [ thick, penColor, smooth, domain=(.02:.2)] {sin(deg(1/x))};
+	  \addplot [color=penColor, fill=penColor,  thick, smooth,domain=(-.02:.02)] {1} \closedcycle;
+          \addplot [color=penColor, fill=penColor,  thick, smooth,domain=(-.02:.02)] {-1} \closedcycle;
+        \end{axis}
+\end{tikzpicture}
+\caption{Der Plot von $f(x)=\protect\sin\left(\frac{1}{x}\right)$.}
+\label{plot:sin 1/x}
+\end{marginfigure}
+
+Teilweise existiert ein Grenzwert einer Funktion von einer oder der anderen Seite (oder von beiden) auch wenn der Grenzwert der Funktion selbst nicht existiert. Da es nützlich ist, diese Situationen beschreiben zu können, betrachten wir im Folgenden das Konzept des \textit{einseitigen Grenzewertes}:
+
+\begin{definition} Wir sagen der \textbf{Grenzwert} von $f(x)$ wenn $x$ von \textbf{links} gegen $a$ geht, ist $L$,
+\[
+\lim_{x\to a-}f(x)=L
+\]
+wenn es für jedes $\epsilon>0$ ein $\delta > 0$ gibt, so dass für jedes $x< a$ wenn 
+\[
+a-\delta < x \qquad\text{gilt, auch gilt dass}\qquad |f(x)-L|<\epsilon.
+\]
+
+Wir sagen der \textbf{Grenzwert} von $f(x)$ wenn $x$ von \textbf{rechts} gegen $a$ geht, ist $L$,
+\[
+\lim_{x\to a+}f(x)=L
+\] 
+wenn es für jedes $\epsilon>0$ ein $\delta > 0$ gibt, so dass für jedes $x > a$ wenn 
+\[
+x<a+\delta \qquad\text{gilt, auch gilt dass}\qquad |f(x)-L|<\epsilon.
+\]
+\end{definition}
+\marginnote[-1in]{Grenzwerte von rechts oder von links werden beide \textbf{einseitige Grenzwerte} genannt.}
+
+
+\begin{example}
+Sei $f(x) = \lfloor x\rfloor$. Diskutieren Sie
+\[
+\lim_{x\to 2-} f(x), \qquad \lim_{x\to 2+} f(x), \qquad\text{und}\qquad\lim_{x\to 2} f(x).
+\]
+\end{example}
+\begin{solution}
+Im Plot von $f(x)$, vgl. Abbildung~\ref{plot:greatest-integer}, sehen wir dass
+\[
+\lim_{x\to 2-} f(x)=1, \qquad\text{und}\quad \lim_{x\to 2+} f(x) = 2.
+\]
+Da diese Grenzwerte unterschiedlich sind, existiert $\lim_{x\to 2} f(x)$ nicht.
+\end{solution}
+
+
+
+\begin{exercises}
+\begin{exercise} Bestimmen Sie die folgenden Grenzwerte, in dem Sie sich auf den Plot in Abbildung~\ref{plot:piecewise-exercise} beziehen.
+\begin{marginfigure}
+\begin{tikzpicture}
+	\begin{axis}[
+            domain=-4:6, xmin=-4, xmax=6, ymin=-3,ymax=10,    
+            unit vector ratio*=1 1 1,
+            axis lines =middle, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            xtick={-4,...,6}, ytick={-3,...,10},
+            xticklabels={-4,,-2,,0,,2,,4,,6}, yticklabels={,-2,,0,,2,,4,,6,,8,,10},
+            grid=major,
+            grid style={dashed, gridColor},
+          ]
+	  \addplot [very thick, penColor, smooth, domain=(-4:-2)] {6};
+	  \addplot [very thick, penColor, smooth, domain=(-2:0)] {x^2-2};
+          \addplot [very thick, penColor, smooth, domain=(0:2)] {(x-1)^3+3*(x-1)+3};
+          \addplot [very thick, penColor, smooth, domain=(2:6)] {(x-4)^3+8};
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(-2,6)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(-2,2)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(0,-2)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(0,-1)};  %% open hole
+          \addplot[color=penColor,fill=background,only marks,mark=*] coordinates{(2,0)};  %% open hole
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(-2,8)};  %% closed hole
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(0,-1.5)};  %% closed hole
+          \addplot[color=penColor,fill=penColor,only marks,mark=*] coordinates{(2,7)};  %% closed hole
+        \end{axis}
+\end{tikzpicture}
+\caption{Plot von $f(x)$, einer stückweise definierten Funktion.}
+\label{plot:piecewise-exercise}
+\end{marginfigure}
+\begin{enumerate}
+\begin{multicols}{3}
+\item $\lim_{x\to 4} f(x)$  
+\item $\lim_{x\to -3} f(x)$  
+\item $\lim_{x\to 0} f(x)$ 
+\item $\lim_{x\to 0-} f(x)$  
+\item $\lim_{x\to 0+} f(x)$  
+\item $f(-2)$  
+\item $\lim_{x\to 2-} f(x)$  
+\item $\lim_{x\to -2-} f(x)$  
+\item $\lim_{x\to 0} f(x+1)$  
+\item $f(0)$ 
+\item $\lim_{x\to 1-} f(x-4)$  
+\item $\lim_{x\to 0+} f(x-2)$
+\end{multicols}  
+\end{enumerate}
+\begin{answer}
+ (a) $8$, (b) $6$, (c) DNE,
+ (d) $-2$, (e) $-1$, (f) $8$,
+ (g) $7$, (h) $6$, (i) $3$,
+ (j) $-3/2$, (k) $6$, (l) $2$
+\end{answer}
+\end{exercise}
+
+
+\begin{exercise} 
+Benutzen Sie eine Tabelle und den Taschenrechner um  $\lim_{x\to 0} 
+\frac{\sin(x)}{x}$ abzuschätzen.
+\begin{answer}
+  $1$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} 
+Benutzen Sie eine Tabelle und den Taschenrechner um  $\lim_{x\to 0} \frac{\sin(2x)}{x}$ abzuschätzen.
+\begin{answer}
+  $2$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} 
+Benutzen Sie eine Tabelle und den Taschenrechner um $\lim_{x\to 0} \frac{x}{\sin\left(\frac{x}{3}\right)}$ abzuschätzen.
+\begin{answer}
+  $3$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} 
+Benutzen Sie eine Tabelle und den Taschenrechner um $\lim_{x\to 0}\frac{\tan(3x)}{\tan(5x)}$ abzuschätzen.
+\begin{answer}
+  $3/5$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} 
+Benutzen Sie eine Tabelle und den Taschenrechner um $\lim_{x\to 0}
+\frac{2^x-1}{x}$ abzuschätzen.
+\begin{answer}
+  $0.6931\approx\ln(2)$
+\end{answer}
+\end{exercise}
+
+\begin{exercise} 
+Benutzen Sie eine Tabelle und den Taschenrechner um $\lim_{x\to 0} (1+x)^{1/x}$ abzuschätzen. 
+\begin{answer}
+  $2.718 \approx e$
+\end{answer}
+\end{exercise}
+
+
+
+\begin{exercise} 
+Skizzieren Sie den Plot von $f(x) = \dfrac{x}{|x|}$ und erklären Sie weshalb der Grenzwert $\lim_{x\to
+  0} \frac{x}{|x|}$ nicht existiert.
+\begin{answer}
+  Beachten Sie was passiert, wenn $x$ positiv und nahe bei Null ist, verglichen mit dem was passiert, wenn $x$ negativ und nahe bei Null ist.
+\end{answer}
+\end{exercise}
+
+
+
+\begin{exercise} 
+Sei $f(x) = \sin\left(\dfrac{\pi}{x}\right)$. Erstellen Sie drei Tabellen in der folgenden Form:
+\[
+\begin{array}{l|l}
+ x & f(x) \\ \hline
+ 0.d &   \\
+ 0.0d &  \\
+ 0.00d &   \\
+ 0.000d &  
+\end{array}
+\]
+wobei $d = 1,3,7$. Was fällt Ihnen auf? Vergleichen Sie die Werte mit dem Grenzwert $\lim_{x\to 0} f(x)$!
+\begin{answer}
+  Der Grenzwert existiert nicht, so ist es nicht überraschend, dass die Resultate so unterschiedlich sind.
+\end{answer}
+\end{exercise}
+
+
+\begin{exercise}
+In der Speziellen Relativitätstheorie von Albert Einstein geht eine bewegte Uhr langsamer als eine unbewegte Uhr. Wenn auf der unbewegten Uhr $t_s$ Sekunden vergehen, vergeht für die bewegte Uhr (Geschwindigkeit $v$) eine Zeitdauer von
+\[
+t_v = t_s \sqrt{1 - v^2/c^2}
+\]
+wobei $c$ die Lichtgeschwindigkeit bezeichnet. Was passiert, wenn sich $v$ von unten gegen $c$ nähert ($v\to c$)?
+\begin{answer}
+Nähert sich $v$ von unten gegen $c$, so strebt $t_v$ gegen Null -- das heisst, dass eine Sekunde in der unbewegten Uhr aus der Sicht der bewegten Uhr extrem kurz erscheint.
+\end{answer}
+\end{exercise}
+
+
+\end{exercises}
+
+
+\section{Rechnen mit Grenzwerten}
+
+In diesem Kapitel betrachten wir einige Werkzeuge, mit denen wir Grenzwerte berechnen können, ohne auf die Grenzwertdefinition zurückzugreifen.
+
+
+\begin{mainTheorem}[Grenzwertsätze]\index{Grenzwertsätze}\label{theorem:limit-laws}
+Nehmen wir an, dass $\lim_{x\to a}f(x)=L$, $\lim_{x\to a}g(x)=M$, $k$
+ist eine Konstante, und $n$ ist eine positive, ganze Zahl.
+\begin{itemize}
+\item[\textbf{Satz 1}] $\lim_{x\to a} kf(x) = k\lim_{x\to a}f(x)=kL$.
+\item[\textbf{Satz 2}] $\lim_{x\to a} (f(x)+g(x)) = \lim_{x\to a}f(x)+\lim_{x\to a}g(x)=L+M$.  
+\item[\textbf{Satz 3}] $\lim_{x\to a} (f(x)g(x)) = \lim_{x\to a}f(x)\cdot\lim_{x\to a}g(x)=LM$. 
+\item[\textbf{Satz 4}] $\lim_{x\to a} \frac{f(x)}{g(x)} =
+  \frac{\lim_{x\to a}f(x)}{\lim_{x\to a}g(x)}=\frac{L}{M}$,solange $M\ne0$.
+\item[\textbf{Satz 5}] $\lim_{x\to a} f(x)^n = \left(\lim_{x\to a}f(x)\right)^n=L^n$.
+\item[\textbf{Satz 6}] $\lim_{x\to a} \sqrt[n]{f(x)} = \sqrt[n]{\lim_{x\to
+    a}f(x)}=\sqrt[n]{L}$ .
+\end{itemize}
+\label{thm:limit laws}
+\end{mainTheorem}
+
+Es genügt also meist, den Grenzwert der ``innersten Teile'' einer Funktion zu berechnen und dann diese Grenzwerte zu kombinieren. 
+
+
+\begin{example}
+Berechnen Sie $\lim_{x\to 1}{x^2-3x+5\over x-2}$. 
+\end{example}
+
+\begin{solution}
+Mit Hilfe der Grenzwertsätze, 
+\begin{align*}
+\lim_{x\to 1}{x^2-3x+5\over x-2}&=
+\dfrac{\lim_{x\to 1}x^2-3x+5}{\lim_{x\to1}(x-2)} \\
+&=\frac{\lim_{x\to 1}x^2-\lim_{x\to1}3x+\lim_{x\to1}5}{\lim_{x\to1}x-\lim_{x\to1}2} \\
+&=\dfrac{\left(\lim_{x\to 1}x\right)^2-3\lim_{x\to1}x+5}{\lim_{x\to1}x-2} \\
+&=\dfrac{1^2-3\cdot1+5}{1-2} \\
+&=\dfrac{1-3+5}{-1} = -3.
+\end{align*}
+\end{solution}
+
+Was bedeutet nun hier $\lim_{x\to1}5$? Es scheint zunächst einmal keinen Sinn zu machen, da die Zahl 5 ja zu keinen Wert ``streben'' kann, sie ist schliesslich eine feste Zahl. Jedoch sollte hier 5 als Funktion interpretiert werden, die überall den Wert 5 aufweist, also $f(x)=5$, eine horizontale Linie. So gesehen macht es Sinn zu fragen was mit dieser Funktion passiert, wenn $x$ gegen 1 strebt; die Funktion besitzt dort (wie überall sonst auch) den Wert 5.
+
+Wir sind jedoch an Grenzwerten interessiert, die nicht ganz so simpel zu bestimmen sind, nämlich Grenzwerte von Funktionen, bei denen der Nenner im Bruch gegen Null strebt. Die grundlegende Idee ist nun, diesen Nenner ``weg zu dividieren'' indem der Zähler so umgeformt wird, dass dort dieser problematische Term steht. Betrachten wir dies an zwei Beispielen:
+
+
+
+\begin{example}
+Berechnen Sie $\lim_{x\to1}{x^2+2x-3\over x-1}$. 
+\end{example}
+\begin{solution}
+Wir können hier nicht einfach $x=1$ einsetzen, denn damit wird der Nenner Null. Wir können aber den Zähler so umformen, dass der problematische Term aus der Funktion fliegt:
+
+\begin{align*}
+\lim_{x\to1}{x^2+2x-3\over x-1}&=\lim_{x\to1}{(x-1)(x+3)\over x-1} \\
+&=\lim_{x\to1}(x+3)=4
+\end{align*}
+\end{solution}
+
+\marginnote[-1in]{Grenzwerte erlauben uns Funktionen an Stellen zu überprüfen, wo diese nicht definiert sind.}
+\begin{example}
+Berechnen Sie $\lim_{x\to-1} {\sqrt{x+5}-2\over x+1}$.
+\end{example}
+\begin{solution} 
+Mit Hilfe der Grenzwertsätze,
+\begin{align*}
+\lim_{x\to-1} {\sqrt{x+5}-2\over x+1}&=
+\lim_{x\to-1} {\sqrt{x+5}-2\over x+1}{\sqrt{x+5}+2\over \sqrt{x+5}+2} \\
+&=\lim_{x\to-1} {x+5-4\over (x+1)(\sqrt{x+5}+2)} \\
+&=\lim_{x\to-1} {x+1\over (x+1)(\sqrt{x+5}+2)} \\
+&=\lim_{x\to-1} {1\over \sqrt{x+5}+2}={1\over4}.
+\end{align*}
+\end{solution}
+\marginnote[-1.5in]{Hier haben wir den Bruch mit dem Zähler erweitert, um den problematischen Term streichen zu können.}
+
+
+
+
+
+\begin{exercises}
+
+\noindent Berechnen Sie die Grenzwerte. Existiert ein Grenzwert nicht, erklären Sie weshalb!
+
+\twocol
+
+\begin{exercise} $\lim_{x\to 3}{x^2+x-12\over x-3}$
+\begin{answer} $7$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim_{x\to 1}{x^2+x-12\over x-3}$
+\begin{answer} $5$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim_{x\to -4}{x^2+x-12\over x-3}$
+\begin{answer} $0$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim_{x\to 2} {x^2+x-12\over x-2}$
+\begin{answer} DNE
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim_{x\to 1} {\sqrt{x+8}-3\over x-1}$
+\begin{answer} $1/6$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim_{x\to 0+} \sqrt{{1\over x}+2} - \sqrt{1\over x}$
+\begin{answer} $0$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim _{x\to 2} 3$
+\begin{answer} $3$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim _{x\to 4 } 3x^3 - 5x $
+\begin{answer} $172$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim _{x\to 0 } {4x - 5x^2\over x-1}$
+\begin{answer} $0$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim _{x\to 1 } {x^2 -1 \over x-1 }$
+\begin{answer} $2$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim _{x\to 0 + } {\sqrt{2-x^2 }\over x}$
+\begin{answer} Existiert nicht
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim _{x\to 0 + } {\sqrt{2-x^2}\over x+1}$
+\begin{answer} $\sqrt2$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim _{x\to a } {x^3 -a^3\over x-a}$
+\begin{answer} $3a^2$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim _{x\to 2 } (x^2 +4)^3$
+\begin{answer} $512$
+\end{answer}\end{exercise}
+
+\begin{exercise} $\lim _{x\to 1 } \begin{cases}
+x-5 & \text{falls $x\ne 1$}, \\
+7 & \text{falls $x=1$}. \end{cases}$
+\begin{answer} $-4$
+\end{answer}\end{exercise}
+
+\endtwocol
+
+\end{exercises}
+
+
+
